@@ -23,3 +23,7 @@ macro_bias.json
 *.bak2
 *.pre-retention-fix
 _archive/
+
+
+sheets-key.json
+sheets_cursor.json
