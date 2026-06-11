@@ -8,8 +8,10 @@
  * First run on an empty sheet backfills the full history (chunked); every run after that
  * appends just the new rows since last time.
  *
- * Schedule it as its own process (runs every minute, appends, exits):
- *   pm2 start sheets-pusher.js --name sheets-pusher --cron "* * * * *" --no-autorestart
+ * Runs as a PERSISTENT process: fires once on startup, then every 60 seconds, appending
+ * only the new rows each time. Because it stays running it shows "online" in pm2 and
+ * resurrects cleanly on reboot:
+ *   pm2 start sheets-pusher.js --name sheets-pusher --node-args="-r dotenv/config"
  *   pm2 save
  */
 
@@ -112,4 +114,19 @@ async function main() {
     console.log(`[SHEETS] appended ${rows.length} rows (cursor -> ${latest})`);
 }
 
-main().catch(e => console.error('[SHEETS] ' + e.message));
+// ── Persistent loop: fire immediately on startup, then once every 60 seconds. ──
+// The `running` guard skips a tick if the previous run is still in flight (the very
+// first backfill can take a couple of minutes), so runs never overlap or double-append.
+const INTERVAL_MS = 60 * 1000;
+let running = false;
+
+async function tick() {
+    if (running) return;
+    running = true;
+    try { await main(); }
+    catch (e) { console.error('[SHEETS] ' + e.message); }
+    finally { running = false; }
+}
+
+tick();                           // run now, on startup
+setInterval(tick, INTERVAL_MS);   // then once a minute, forever
