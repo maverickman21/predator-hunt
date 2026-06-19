@@ -308,7 +308,49 @@ function coinglassGet(endpoint) {
     });
 }
 
-// ─── Deribit Options — Max Pain + Put/Call Ratio ─────────────────────────────
+// ─── Deribit Options — Max Pain + Put/Call Ratio ─────────────────────────────// CoinGlass v4 (CVD + Option Max Pain)
+function coinglassV4Get(endpoint) {
+    return new Promise((resolve) => {
+        const url = new URL("https://open-api-v4.coinglass.com" + endpoint);
+        const options = {
+            hostname: url.hostname,
+            path: url.pathname + url.search,
+            method: "GET",
+            headers: { "accept": "application/json", "CG-API-KEY": COINGLASS_API_KEY },
+            timeout: 8000,
+        };
+        const req = https.request(options, (res) => {
+            let data = "";
+            res.on("data", chunk => data += chunk);
+            res.on("end", () => {
+                try { resolve(JSON.parse(data)); }
+                catch (e) { console.log("  [CGv4 ERR] " + endpoint + ": " + data.slice(0,80)); resolve(null); }
+            });
+        });
+        req.on("error", (e) => { console.log("  [CGv4 ERR] " + endpoint + ": " + e.message); resolve(null); });
+        req.on("timeout", () => { req.destroy(); console.log("  [CGv4 TIMEOUT] " + endpoint); resolve(null); });
+        req.end();
+    });
+}
+
+async function getFuturesCVD() {
+    try {
+        const r = await coinglassV4Get("/api/futures/aggregated-cvd/history?exchange_list=Binance,OKX,Bybit&symbol=ETH&interval=30m&limit=1&unit=usd");
+        if (!r || String(r.code) !== "0" || !Array.isArray(r.data) || !r.data.length) return null;
+        const d = r.data[r.data.length - 1];
+        return { buy: d.agg_taker_buy_vol || 0, sell: d.agg_taker_sell_vol || 0, delta: d.cum_vol_delta || 0 };
+    } catch (e) { console.log("  [CVD ERR] " + e.message.slice(0,60)); return null; }
+}
+
+async function getOptionMaxPain() {
+    try {
+        const r = await coinglassV4Get("/api/option/max-pain?symbol=ETH&exchange=Deribit");
+        if (!r || String(r.code) !== "0" || !Array.isArray(r.data)) return null;
+        return r.data;
+    } catch (e) { console.log("  [OPTMP ERR] " + e.message.slice(0,60)); return null; }
+}
+
+
 function deribitGet(endpoint) {
     return new Promise((resolve) => {
         const url = new URL(`https://www.deribit.com/api/v2${endpoint}`);
@@ -698,6 +740,7 @@ function ensureCSV(filepath, header) {
 let SCAN_LOG = '';
 let CLUSTER_LOG = '';
 let PILLAR_LOG = '';
+let PILLAR_OPTIONS_LOG = '';
 let currentMonth = '';
 
 function rotateLogs() {
@@ -709,10 +752,12 @@ function rotateLogs() {
     SCAN_LOG = getMonthlyFilename('eth_signals_v2');
     CLUSTER_LOG = getMonthlyFilename('eth_clusters_v2');
     PILLAR_LOG = getMonthlyFilename('eth_pillars_v2');
+    PILLAR_OPTIONS_LOG = getMonthlyFilename('eth_options_detail_v2');
 
     ensureCSV(SCAN_LOG, 'timestamp,block,pair,category,divergence_pct,spike_pct,is_signal,cluster_pairs,eth_price,eth_delta_5m,nq_price\n');
     ensureCSV(CLUSTER_LOG, 'timestamp,block,unique_pairs,signal_count,eth_price,eth_delta,eth_direction,bias_score,bias_label,funding_rate,oi_h1_change,vol_h1_change,ls_long_pct,liq_long_pct,liq_total_usd,max_pain,max_pain_dist,pc_ratio,nq_price\n');
-    ensureCSV(PILLAR_LOG, 'timestamp,eth_price,nq_price,yellow_count,funding_rate,oi_total,oi_h1_change,oi_h4_change,vol_h1_change,ls_long_pct,ls_short_pct,liq_total_1h,liq_long_pct,liq_total_4h,max_pain,max_pain_dist,pc_ratio,bias_score\n');
+    ensureCSV(PILLAR_LOG, 'timestamp,eth_price,nq_price,yellow_count,funding_rate,oi_total,oi_h1_change,oi_h4_change,vol_h1_change,ls_long_pct,ls_short_pct,liq_total_1h,liq_long_pct,liq_total_4h,max_pain,max_pain_dist,pc_ratio,bias_score,cvd_agg_buy,cvd_agg_sell,cvd_delta\n');
+    ensureCSV(PILLAR_OPTIONS_LOG, 'timestamp,eth_price,expiry_date,max_pain_price,call_oi,put_oi,call_notional,put_notional\n');
 }
 
 function initLogs() { rotateLogs(); }
@@ -754,9 +799,11 @@ async function pillarSnapshot(wethPrice, nqP) {
     if (now - lastPillarFetch < PILLAR_INTERVAL) return;
     lastPillarFetch = now;
 
-    const [pillars, deribit] = await Promise.all([
+    const [pillars, deribit, cvd, optMaxPain] = await Promise.all([
         getFourPillars(),
         getDeribitMaxPain(wethPrice),
+        getFuturesCVD(),
+        getOptionMaxPain(),
     ]);
 
     // Compute bias for context
@@ -778,8 +825,16 @@ async function pillarSnapshot(wethPrice, nqP) {
     const pcr = deribit?.pcRatio || 0;
 
     rotateLogs();
-    const row = `${new Date().toISOString()},${wethPrice.toFixed(2)},${nqP.toFixed(2)},${activeYellowCount},${fr},${(oiTotal / 1e9).toFixed(2)},${oiH1},${oiH4},${volH1},${lsLong.toFixed(1)},${lsShort.toFixed(1)},${(liqTotal / 1e6).toFixed(3)},${liqLongPct.toFixed(1)},${(liqTotal4h / 1e6).toFixed(3)},${mp},${mpDist.toFixed(0)},${pcr.toFixed(3)},${bias.score}\n`;
+    const row = `${new Date().toISOString()},${wethPrice.toFixed(2)},${nqP.toFixed(2)},${activeYellowCount},${fr},${(oiTotal / 1e9).toFixed(2)},${oiH1},${oiH4},${volH1},${lsLong.toFixed(1)},${lsShort.toFixed(1)},${(liqTotal / 1e6).toFixed(3)},${liqLongPct.toFixed(1)},${(liqTotal4h / 1e6).toFixed(3)},${mp},${mpDist.toFixed(0)},${pcr.toFixed(3)},${bias.score},${cvd ? cvd.buy.toFixed(2) : ""},${cvd ? cvd.sell.toFixed(2) : ""},${cvd ? cvd.delta.toFixed(2) : ""}\n`;
     fs.appendFileSync(PILLAR_LOG, row);
+    if (Array.isArray(optMaxPain) && optMaxPain.length) {
+        const optTs = new Date().toISOString();
+        let optRows = "";
+        for (const e of optMaxPain) {
+            optRows += optTs + "," + wethPrice.toFixed(2) + "," + e.date + "," + e.max_pain_price + "," + e.call_open_interest + "," + e.put_open_interest + "," + e.call_open_interest_notional + "," + e.put_open_interest_notional + "\n";
+        }
+        fs.appendFileSync(PILLAR_OPTIONS_LOG, optRows);
+    }
 
     // ─── REGIME ENGINE: feed pillar data ───
     const regimeState = regime.processScan({
