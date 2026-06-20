@@ -335,9 +335,14 @@ function coinglassV4Get(endpoint) {
 
 async function getFuturesCVD() {
     try {
-        const r = await coinglassV4Get("/api/futures/aggregated-cvd/history?exchange_list=Binance,OKX,Bybit&symbol=ETH&interval=30m&limit=1&unit=usd");
+        const r = await coinglassV4Get("/api/futures/aggregated-cvd/history?exchange_list=Binance,OKX,Bybit&symbol=ETH&interval=1m&limit=5&unit=usd");
         if (!r || String(r.code) !== "0" || !Array.isArray(r.data) || !r.data.length) return null;
-        const d = r.data[r.data.length - 1];
+        // scan from newest backwards, take the most recent bar with real volume
+        let d = null;
+        for (let i = r.data.length - 1; i >= 0; i--) {
+            if ((r.data[i].agg_taker_buy_vol || 0) > 0 || (r.data[i].agg_taker_sell_vol || 0) > 0) { d = r.data[i]; break; }
+        }
+        if (!d) return null;
         return { buy: d.agg_taker_buy_vol || 0, sell: d.agg_taker_sell_vol || 0, delta: d.cum_vol_delta || 0 };
     } catch (e) { console.log("  [CVD ERR] " + e.message.slice(0,60)); return null; }
 }
@@ -348,6 +353,35 @@ async function getOptionMaxPain() {
         if (!r || String(r.code) !== "0" || !Array.isArray(r.data)) return null;
         return r.data;
     } catch (e) { console.log("  [OPTMP ERR] " + e.message.slice(0,60)); return null; }
+}
+
+// Liquidation orders — event stream, $100 floor, paginate past 200-cap, dedup by cursor
+async function getLiquidationOrders() {
+    const MIN = 100;
+    const collected = [];
+    let endParam = "";
+    let safety = 0;
+    try {
+        while (safety < 10) {
+            safety++;
+            const ep = "/api/futures/liquidation/order?exchange=Binance&symbol=ETH&min_liquidation_amount=" + MIN + endParam;
+            const r = await coinglassV4Get(ep);
+            if (!r || String(r.code) !== "0" || !Array.isArray(r.data) || !r.data.length) break;
+            const batch = r.data;
+            const fresh = batch.filter(e => e.time > lastLiqTime);
+            collected.push(...fresh);
+            if (batch.length >= 200 && fresh.length === batch.length) {
+                const oldest = Math.min(...batch.map(e => e.time));
+                endParam = "&end_time=" + (oldest - 1);
+            } else { break; }
+        }
+        if (collected.length) {
+            const newest = Math.max(...collected.map(e => e.time));
+            if (newest > lastLiqTime) lastLiqTime = newest;
+        }
+        if (safety >= 10) console.log("  [LIQ] hit pagination safety cap (10 pulls)");
+        return collected;
+    } catch (e) { console.log("  [LIQ ERR] " + e.message.slice(0,60)); return []; }
 }
 
 
@@ -741,6 +775,8 @@ let SCAN_LOG = '';
 let CLUSTER_LOG = '';
 let PILLAR_LOG = '';
 let PILLAR_OPTIONS_LOG = '';
+let PILLAR_LIQ_LOG = '';
+let lastLiqTime = Date.now() - 60000;
 let currentMonth = '';
 
 function rotateLogs() {
@@ -753,11 +789,13 @@ function rotateLogs() {
     CLUSTER_LOG = getMonthlyFilename('eth_clusters_v2');
     PILLAR_LOG = getMonthlyFilename('eth_pillars_v2');
     PILLAR_OPTIONS_LOG = getMonthlyFilename('eth_options_detail_v2');
+    PILLAR_LIQ_LOG = getMonthlyFilename('eth_liquidations_v2');
 
     ensureCSV(SCAN_LOG, 'timestamp,block,pair,category,divergence_pct,spike_pct,is_signal,cluster_pairs,eth_price,eth_delta_5m,nq_price\n');
     ensureCSV(CLUSTER_LOG, 'timestamp,block,unique_pairs,signal_count,eth_price,eth_delta,eth_direction,bias_score,bias_label,funding_rate,oi_h1_change,vol_h1_change,ls_long_pct,liq_long_pct,liq_total_usd,max_pain,max_pain_dist,pc_ratio,nq_price\n');
     ensureCSV(PILLAR_LOG, 'timestamp,eth_price,nq_price,yellow_count,funding_rate,oi_total,oi_h1_change,oi_h4_change,vol_h1_change,ls_long_pct,ls_short_pct,liq_total_1h,liq_long_pct,liq_total_4h,max_pain,max_pain_dist,pc_ratio,bias_score,cvd_agg_buy,cvd_agg_sell,cvd_delta\n');
     ensureCSV(PILLAR_OPTIONS_LOG, 'timestamp,eth_price,expiry_date,max_pain_price,call_oi,put_oi,call_notional,put_notional\n');
+    ensureCSV(PILLAR_LIQ_LOG, 'log_time,exchange,symbol,price,usd_value,side,event_time\n');
 }
 
 function initLogs() { rotateLogs(); }
@@ -799,11 +837,12 @@ async function pillarSnapshot(wethPrice, nqP) {
     if (now - lastPillarFetch < PILLAR_INTERVAL) return;
     lastPillarFetch = now;
 
-    const [pillars, deribit, cvd, optMaxPain] = await Promise.all([
+    const [pillars, deribit, cvd, optMaxPain, liqOrders] = await Promise.all([
         getFourPillars(),
         getDeribitMaxPain(wethPrice),
         getFuturesCVD(),
         getOptionMaxPain(),
+        getLiquidationOrders(),
     ]);
 
     // Compute bias for context
@@ -834,6 +873,15 @@ async function pillarSnapshot(wethPrice, nqP) {
             optRows += optTs + "," + wethPrice.toFixed(2) + "," + e.date + "," + e.max_pain_price + "," + e.call_open_interest + "," + e.put_open_interest + "," + e.call_open_interest_notional + "," + e.put_open_interest_notional + "\n";
         }
         fs.appendFileSync(PILLAR_OPTIONS_LOG, optRows);
+    if (Array.isArray(liqOrders) && liqOrders.length) {
+        const liqTs = new Date().toISOString();
+        let liqRows = "";
+        for (const e of liqOrders) {
+            liqRows += liqTs + "," + e.exchange_name + "," + e.symbol + "," + e.price + "," + e.usd_value + "," + e.side + "," + e.time + "\n";
+        }
+        fs.appendFileSync(PILLAR_LIQ_LOG, liqRows);
+        console.log("  [LIQ] logged " + liqOrders.length + " liquidation events");
+    }
     }
 
     // ─── REGIME ENGINE: feed pillar data ───
