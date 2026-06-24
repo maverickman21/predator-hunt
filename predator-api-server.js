@@ -208,7 +208,8 @@ app.get('/api/pillars', (req, res) => {
 
     const HEADER = 'qld_time,timestamp,eth_price,nq_price,yellow_count,funding_rate,'
                  + 'oi_total,oi_h1_change,oi_h4_change,vol_h1_change,ls_long_pct,ls_short_pct,'
-                 + 'liq_total_1h,liq_long_pct,liq_total_4h,max_pain,max_pain_dist,pc_ratio,bias_score';
+                 + 'liq_total_1h,liq_long_pct,liq_total_4h,max_pain,max_pain_dist,pc_ratio,bias_score,'
+                 + 'cvd_agg_buy,cvd_agg_sell,cvd_delta';
 
     const out = [HEADER];
     for (const r of rows) out.push(qldStr(r.ms) + ',' + r.line);
@@ -217,3 +218,59 @@ app.get('/api/pillars', (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// -------------------------------------------------------------
+// GET /api/liquidations
+// Raw force-close events as ONE continuous CSV, stitched from every
+// monthly eth_liquidations_v2_YYYY-MM.csv. Prepends Qld-time as col 0.
+//   Optional bounds matched against log_time (UTC, col 0 of sidecar):
+//   ?from=2026-06-22T00:00:00Z  ?to=2026-06-23T00:00:00Z
+// NOTE: we do NOT dedupe by timestamp - a cascade fires many events in the
+// same millisecond and we want them all - so we dedupe by the FULL row.
+// side: 1 = short liquidated (force-bought) ; 2 = long liquidated (force-sold)
+// -------------------------------------------------------------
+app.get('/api/liquidations', (req, res) => {
+  try {
+    const fromMs = req.query.from ? Date.parse(req.query.from) : -Infinity;
+    const toMs   = req.query.to   ? Date.parse(req.query.to)   :  Infinity;
+
+    const QLD_OFFSET_MS = 10 * 60 * 60 * 1000;
+    const pad = n => String(n).padStart(2, '0');
+    const qldStr = ms => {
+      const d = new Date(ms + QLD_OFFSET_MS);
+      return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate()) + ' '
+           + pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes()) + ':' + pad(d.getUTCSeconds());
+    };
+
+    const files = fs.readdirSync(__dirname)
+      .filter(f => /^eth_liquidations_v2_\d{4}-\d{2}\.csv$/.test(f))
+      .sort();
+
+    const seen = new Set();
+    const rows = [];
+    for (const file of files) {
+      const lines = fs.readFileSync(path.join(__dirname, file), 'utf8').split(/\r?\n/);
+      for (const raw of lines) {
+        const line = raw.trim();
+        if (!line) continue;
+        if (line.indexOf('log_time') === 0) continue;
+        const comma = line.indexOf(',');
+        if (comma < 1) continue;
+        const ms = Date.parse(line.slice(0, comma));
+        if (isNaN(ms) || ms < fromMs || ms > toMs) continue;
+        if (seen.has(line)) continue;
+        seen.add(line);
+        rows.push({ ms, line });
+      }
+    }
+    rows.sort((a, b) => a.ms - b.ms);
+
+    const HEADER = 'qld_time,log_time,exchange,symbol,price,usd_value,side,event_time';
+    const out = [HEADER];
+    for (const r of rows) out.push(qldStr(r.ms) + ',' + r.line);
+    res.type('text/csv').send(out.join('\n') + '\n');
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
