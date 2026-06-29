@@ -333,6 +333,25 @@ function coinglassV4Get(endpoint) {
     });
 }
 
+// --- v4 OHLC: last CLOSED 1m candle only (drop the still-forming last element) ---
+async function getFundingOHLC() {
+    try {
+        var r = await coinglassV4Get("/api/futures/funding-rate/history?exchange=Binance&symbol=ETHUSDT&interval=1m&limit=3");
+        if (!r || String(r.code) !== "0" || !Array.isArray(r.data) || r.data.length < 2) return null;
+        var c = r.data[r.data.length - 2];
+        return { open: parseFloat(c.open), high: parseFloat(c.high), low: parseFloat(c.low), close: parseFloat(c.close) };
+    } catch (e) { console.log("  [FUND OHLC ERR] " + e.message.slice(0,60)); return null; }
+}
+
+async function getOiOHLC() {
+    try {
+        var r = await coinglassV4Get("/api/futures/open-interest/history?exchange=Binance&symbol=ETHUSDT&interval=1m&limit=3&unit=usd");
+        if (!r || String(r.code) !== "0" || !Array.isArray(r.data) || r.data.length < 2) return null;
+        var c = r.data[r.data.length - 2];
+        return { open: parseFloat(c.open), high: parseFloat(c.high), low: parseFloat(c.low), close: parseFloat(c.close) };
+    } catch (e) { console.log("  [OI OHLC ERR] " + e.message.slice(0,60)); return null; }
+}
+
 async function getFuturesCVD() {
     try {
         const r = await coinglassV4Get("/api/futures/aggregated-cvd/history?exchange_list=Binance,OKX,Bybit&symbol=ETH&interval=1m&limit=5&unit=usd");
@@ -787,13 +806,13 @@ function rotateLogs() {
 
     SCAN_LOG = getMonthlyFilename('eth_signals_v2');
     CLUSTER_LOG = getMonthlyFilename('eth_clusters_v2');
-    PILLAR_LOG = getMonthlyFilename('eth_pillars_v2');
+    PILLAR_LOG = getMonthlyFilename('eth_pillars_v3');
     PILLAR_OPTIONS_LOG = getMonthlyFilename('eth_options_detail_v2');
     PILLAR_LIQ_LOG = getMonthlyFilename('eth_liquidations_v2');
 
     ensureCSV(SCAN_LOG, 'timestamp,block,pair,category,divergence_pct,spike_pct,is_signal,cluster_pairs,eth_price,eth_delta_5m,nq_price\n');
     ensureCSV(CLUSTER_LOG, 'timestamp,block,unique_pairs,signal_count,eth_price,eth_delta,eth_direction,bias_score,bias_label,funding_rate,oi_h1_change,vol_h1_change,ls_long_pct,liq_long_pct,liq_total_usd,max_pain,max_pain_dist,pc_ratio,nq_price\n');
-    ensureCSV(PILLAR_LOG, 'timestamp,eth_price,nq_price,yellow_count,funding_rate,oi_total,oi_h1_change,oi_h4_change,vol_h1_change,ls_long_pct,ls_short_pct,liq_total_1h,liq_long_pct,liq_total_4h,max_pain,max_pain_dist,pc_ratio,bias_score,cvd_agg_buy,cvd_agg_sell,cvd_delta\n');
+    ensureCSV(PILLAR_LOG, 'qld_time,timestamp,eth_price,nq_price,yellow_count,funding_open,funding_high,funding_low,funding_close,oi_open,oi_high,oi_low,oi_close,cvd_agg_buy,cvd_agg_sell,cvd_delta\n');
     ensureCSV(PILLAR_OPTIONS_LOG, 'timestamp,eth_price,expiry_date,max_pain_price,call_oi,put_oi,call_notional,put_notional\n');
     ensureCSV(PILLAR_LIQ_LOG, 'log_time,exchange,symbol,price,usd_value,side,event_time\n');
 }
@@ -837,34 +856,44 @@ async function pillarSnapshot(wethPrice, nqP) {
     if (now - lastPillarFetch < PILLAR_INTERVAL) return;
     lastPillarFetch = now;
 
-    const [pillars, deribit, cvd, optMaxPain, liqOrders] = await Promise.all([
+    const [pillars, deribit, cvd, optMaxPain, liqOrders, fundOHLC, oiOHLC] = await Promise.all([
         getFourPillars(),
         getDeribitMaxPain(wethPrice),
         getFuturesCVD(),
         getOptionMaxPain(),
         getLiquidationOrders(),
+        getFundingOHLC(),
+        getOiOHLC(),
     ]);
 
     // Compute bias for context
     const ethMove = getEthPriceMove(CLUSTER_WINDOW_MS);
     const bias = computeBias(ethMove, pillars, deribit);
 
-    const fr = pillars?.funding?.rate || 0;
-    const oiTotal = pillars?.oi?.total || 0;
-    const oiH1 = pillars?.oi?.h1Change || 0;
-    const oiH4 = pillars?.oi?.h4Change || 0;
-    const volH1 = pillars?.oi?.h1VolChange || 0;
-    const lsLong = pillars?.longShort?.longPct || 0;
-    const lsShort = pillars?.longShort?.shortPct || 0;
-    const liqTotal = pillars?.liquidations?.total || 0;
-    const liqLongPct = pillars?.liquidations?.longPct || 0;
-    const liqTotal4h = pillars?.liquidations?.total4h || 0;
-    const mp = deribit?.maxPain || 0;
-    const mpDist = deribit?.distFromPrice || 0;
-    const pcr = deribit?.pcRatio || 0;
+    const fr = pillars && pillars.funding ? (pillars.funding.rate || 0) : 0;
+    const oiH1 = pillars && pillars.oi ? (pillars.oi.h1Change || 0) : 0;
+    const oiH4 = pillars && pillars.oi ? (pillars.oi.h4Change || 0) : 0;
+    const lsLong = pillars && pillars.longShort ? (pillars.longShort.longPct || 0) : 0;
+    const lsShort = pillars && pillars.longShort ? (pillars.longShort.shortPct || 0) : 0;
+    const liqLongPct = pillars && pillars.liquidations ? (pillars.liquidations.longPct || 0) : 0;
+    const liqTotal = pillars && pillars.liquidations ? (pillars.liquidations.total || 0) : 0;
+
+    // --- v3: funding + OI as v4 OHLC (last closed candle); dead fields dropped ---
+    var fO = fundOHLC || {};
+    var oO = oiOHLC || {};
+    var blank7 = function(v){ return (v === undefined || v === null || isNaN(v)) ? "" : v; };
+    var nowIso = new Date().toISOString();
+    var QLD_OFFSET_MS = 10 * 60 * 60 * 1000;
+    var pad2 = function(n){ return String(n).padStart(2, "0"); };
+    var qd = new Date(Date.now() + QLD_OFFSET_MS);
+    var qldStr = qd.getUTCFullYear() + "-" + pad2(qd.getUTCMonth()+1) + "-" + pad2(qd.getUTCDate()) + " "
+             + pad2(qd.getUTCHours()) + ":" + pad2(qd.getUTCMinutes()) + ":" + pad2(qd.getUTCSeconds());
 
     rotateLogs();
-    const row = `${new Date().toISOString()},${wethPrice.toFixed(2)},${nqP.toFixed(2)},${activeYellowCount},${fr},${(oiTotal / 1e9).toFixed(2)},${oiH1},${oiH4},${volH1},${lsLong.toFixed(1)},${lsShort.toFixed(1)},${(liqTotal / 1e6).toFixed(3)},${liqLongPct.toFixed(1)},${(liqTotal4h / 1e6).toFixed(3)},${mp},${mpDist.toFixed(0)},${pcr.toFixed(3)},${bias.score},${cvd ? cvd.buy.toFixed(2) : ""},${cvd ? cvd.sell.toFixed(2) : ""},${cvd ? cvd.delta.toFixed(2) : ""}\n`;
+    const row = qldStr + "," + nowIso + "," + wethPrice.toFixed(2) + "," + nqP.toFixed(2) + "," + activeYellowCount + ","
+        + blank7(fO.open) + "," + blank7(fO.high) + "," + blank7(fO.low) + "," + blank7(fO.close) + ","
+        + blank7(oO.open) + "," + blank7(oO.high) + "," + blank7(oO.low) + "," + blank7(oO.close) + ","
+        + (cvd ? cvd.buy.toFixed(2) : "") + "," + (cvd ? cvd.sell.toFixed(2) : "") + "," + (cvd ? cvd.delta.toFixed(2) : "") + "\n";
     fs.appendFileSync(PILLAR_LOG, row);
     if (Array.isArray(optMaxPain) && optMaxPain.length) {
         const optTs = new Date().toISOString();
