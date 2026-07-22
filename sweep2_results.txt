@@ -1,0 +1,83 @@
+SWEEP 2 - TRIGGER  2026-07-18T02:22:24.429Z
+gate: ratified sweep1d winner (mem92/24h NQ/smoke3h P80)
+
+=== ep10m / thumb P85/60m / floor P50/240m ===
+  targets: 2/4   13 MISS (fired 08:47,13:07,14:43,15:29,16:39) | 14 HIT@09:55 | 16 MISS (fired 04:25,04:55,17:45,18:50,21:11) | 17 HIT@09:25
+  Jul06 midday control fires: 1 <-- check
+  total fires: 34  per-day: 12:1 13:6 14:5 15:1 16:6 17:9 06:4 07:2
+
+=== ep10m / thumb P85/60m / floor P60/240m ===
+  targets: 2/4   13 MISS (fired 08:47,13:07,15:01,15:31,16:39) | 14 HIT@09:55 | 16 MISS (fired 04:25,04:55,17:45,18:50,21:11) | 17 HIT@09:25
+  Jul06 midday control fires: 1 <-- check
+  total fires: 34  per-day: 12:1 13:6 14:5 15:1 16:6 17:9 06:4 07:2
+
+=== ep10m / thumb P85/90m / floor P50/360m ===
+  targets: 2/4   13 MISS (fired 08:46,13:07,15:01,15:31) | 14 HIT@09:49 | 16 MISS (fired 04:25,04:55,17:45,18:53,21:11) | 17 HIT@09:25
+  Jul06 midday control fires: 1 <-- check
+  total fires: 31  per-day: 12:1 13:5 14:4 15:1 16:6 17:9 06:4 07:1
+
+=== ep10m / thumb P85/90m / floor P60/360m ===
+  targets: 2/4   13 MISS (fired 08:46,13:07,15:01,15:31) | 14 HIT@09:49 | 16 MISS (fired 04:25,04:55,17:45,18:53,21:11) | 17 HIT@09:25
+  Jul06 midday control fires: 1 <-- check
+  total fires: 31  per-day: 12:1 13:5 14:4 15:1 16:6 17:9 06:4 07:1
+
+=== ep10m / thumb P90/60m / floor P50/240m ===
+  targets: 2/4   13 MISS (fired 08:47,13:07,14:43,15:29,16:39) | 14 HIT@09:55 | 16 MISS (fired 04:25,04:55,17:45,18:50,21:11) | 17 HIT@09:25
+  Jul06 midday control fires: 1 <-- check
+  total fires: 34  per-day: 12:1 13:6 14:5 15:1 16:6 17:9 06:4 07:2
+
+=== ep10m / thumb P90/60m / floor P60/240m ===
+  targets: 2/4   13 MISS (fired 08:47,13:07,15:01,15:31,16:39) | 14 HIT@09:55 | 16 MISS (fired 04:25,04:55,17:45,18:50,21:11) | 17 HIT@09:25
+  Jul06 midday control fires: 1 <-- check
+  total fires: 34  per-day: 12:1 13:6 14:5 15:1 16:6 17:9 06:4 07:2
+
+=== ep10m / thumb P90/90m / floor P50/360m ===
+  targets: 2/4   13 MISS (fired 08:47,13:07,15:29) | 14 HIT@09:56 | 16 MISS (fired 04:25,04:55,17:45,21:11) | 17 HIT@09:25
+  Jul06 midday control fires: 0 CLEAN
+  total fires: 26  per-day: 12:1 13:4 14:4 15:1 16:5 17:7 06:3 07:1
+
+=== ep10m / thumb P90/90m / floor P60/360m ===
+  targets: 2/4   13 MISS (fired 08:47,13:07,15:29) | 14 HIT@09:56 | 16 MISS (fired 04:25,04:55,17:45,21:11) | 17 HIT@09:25
+  Jul06 midday control fires: 0 CLEAN
+  total fires: 26  per-day: 12:1 13:4 14:4 15:1 16:5 17:7 06:3 07:1
+
+=== ep15m / thumb P85/60m / floor P50/240m ===
+  targets: 2/4   13 MISS (fired 08:48,13:07,15:31) | 14 HIT@09:55 | 16 MISS (fired 04:30,17:45,18:21,18:55,21:17) | 17 HIT@09:25
+  Jul06 midday control fires: 1 <-- check
+  total fires: 29  per-day: 12:1 13:4 14:5 15:1 16:5 17:8 06:3 07:2
+
+=== ep15m / thumb P85/60m / floor P60/240m ===
+  targets: 2/4   13 MISS (fired 08:48,13:07,15:31) | 14 HIT@09:55 | 16 MISS (fired 04:30,17:45,18:21,18:55,21:17) | 17 HIT@09:25
+  Jul06 midday control fires: 1 <-- check
+  total fires: 29  per-day: 12:1 13:4 14:5 15:1 16:5 17:8 06:3 07:2
+
+=== ep15m / thumb P85/90m / floor P50/360m ===
+  targets: 2/4   13 MISS (fired 08:48,13:07,15:31) | 14 HIT@09:55 | 16 MISS (fired 04:51,05:21,17:45,18:21,21:17) | 17 HIT@09:25
+  Jul06 midday control fires: 1 <-- check
+  total fires: 28  per-day: 12:1 13:4 14:5 15:1 16:5 17:7 06:4 07:1
+
+=== ep15m / thumb P85/90m / floor P60/360m ===
+  targets: 2/4   13 MISS (fired 08:48,13:07,15:31) | 14 HIT@09:55 | 16 MISS (fired 04:52,17:45,18:21,21:17) | 17 HIT@09:25
+  Jul06 midday control fires: 1 <-- check
+  total fires: 26  per-day: 12:1 13:3 14:5 15:1 16:4 17:7 06:4 07:1
+
+=== ep15m / thumb P90/60m / floor P50/240m ===
+  targets: 2/4   13 MISS (fired 08:48,13:07,15:31) | 14 HIT@09:55 | 16 MISS (fired 04:30,17:45,18:21,18:55,21:17) | 17 HIT@09:25
+  Jul06 midday control fires: 1 <-- check
+  total fires: 29  per-day: 12:1 13:4 14:5 15:1 16:5 17:8 06:3 07:2
+
+=== ep15m / thumb P90/60m / floor P60/240m ===
+  targets: 2/4   13 MISS (fired 08:48,13:07,15:31) | 14 HIT@09:55 | 16 MISS (fired 04:30,17:45,18:21,18:55,21:17) | 17 HIT@09:25
+  Jul06 midday control fires: 1 <-- check
+  total fires: 29  per-day: 12:1 13:4 14:5 15:1 16:5 17:8 06:3 07:2
+
+=== ep15m / thumb P90/90m / floor P50/360m ===
+  targets: 2/4   13 MISS (fired 08:48,13:07,15:31) | 14 HIT@09:55 | 16 MISS (fired 04:52,17:45,18:21,21:17) | 17 HIT@09:25
+  Jul06 midday control fires: 0 CLEAN
+  total fires: 24  per-day: 12:1 13:4 14:5 15:1 16:4 17:6 06:2 07:1
+
+=== ep15m / thumb P90/90m / floor P60/360m ===
+  targets: 2/4   13 MISS (fired 08:48,13:07,15:31) | 14 HIT@09:55 | 16 MISS (fired 04:52,17:45,18:21,21:17) | 17 HIT@09:25
+  Jul06 midday control fires: 0 CLEAN
+  total fires: 23  per-day: 12:1 13:3 14:5 15:1 16:4 17:6 06:2 07:1
+

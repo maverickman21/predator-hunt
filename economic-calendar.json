@@ -1,0 +1,74 @@
+{
+  "description": "High-impact US macro economic events that override blockchain correlation",
+  "updated": "2026-04-15",
+  "note": "All times are US Eastern. Brisbane = ET + 14 hours (EDT) or ET + 15 hours (EST)",
+  "events": [
+    { "date": "2026-01-10", "time": "08:30", "event": "NFP", "name": "Non-Farm Payrolls (Dec)", "impact": "HIGH" },
+    { "date": "2026-01-14", "time": "08:30", "event": "PPI", "name": "Producer Price Index (Dec)", "impact": "HIGH" },
+    { "date": "2026-01-15", "time": "08:30", "event": "CPI", "name": "Consumer Price Index (Dec)", "impact": "HIGH" },
+    { "date": "2026-01-28", "time": "14:00", "event": "FOMC", "name": "FOMC Rate Decision", "impact": "HIGH" },
+    { "date": "2026-01-30", "time": "08:30", "event": "GDP", "name": "GDP Advance (Q4)", "impact": "HIGH" },
+
+    { "date": "2026-02-06", "time": "08:30", "event": "NFP", "name": "Non-Farm Payrolls (Jan)", "impact": "HIGH" },
+    { "date": "2026-02-12", "time": "08:30", "event": "CPI", "name": "Consumer Price Index (Jan)", "impact": "HIGH" },
+    { "date": "2026-02-13", "time": "08:30", "event": "PPI", "name": "Producer Price Index (Jan)", "impact": "HIGH" },
+    { "date": "2026-02-26", "time": "08:30", "event": "GDP", "name": "GDP Second Estimate (Q4)", "impact": "MEDIUM" },
+
+    { "date": "2026-03-06", "time": "08:30", "event": "NFP", "name": "Non-Farm Payrolls (Feb)", "impact": "HIGH" },
+    { "date": "2026-03-11", "time": "08:30", "event": "CPI", "name": "Consumer Price Index (Feb)", "impact": "HIGH" },
+    { "date": "2026-03-12", "time": "08:30", "event": "PPI", "name": "Producer Price Index (Feb)", "impact": "HIGH" },
+    { "date": "2026-03-18", "time": "14:00", "event": "FOMC", "name": "FOMC Rate Decision + SEP + Dot Plot", "impact": "HIGH" },
+    { "date": "2026-03-26", "time": "08:30", "event": "GDP", "name": "GDP Third Estimate (Q4)", "impact": "MEDIUM" },
+
+    { "date": "2026-04-03", "time": "08:30", "event": "NFP", "name": "Non-Farm Payrolls (Mar)", "impact": "HIGH" },
+    { "date": "2026-04-10", "time": "08:30", "event": "CPI", "name": "Consumer Price Index (Mar)", "impact": "HIGH" },
+    { "date": "2026-04-14", "time": "08:30", "event": "PPI", "name": "Producer Price Index (Mar)", "impact": "HIGH" },
+    { "date": "2026-04-29", "time": "14:00", "event": "FOMC", "name": "FOMC Rate Decision", "impact": "HIGH" },
+    { "date": "2026-04-30", "time": "08:30", "event": "GDP", "name": "GDP Advance (Q1)", "impact": "HIGH" },
+
+    { "date": "2026-05-01", "time": "08:30", "event": "NFP", "name": "Non-Farm Payrolls (Apr)", "impact": "HIGH" },
+    { "date": "2026-05-12", "time": "08:30", "event": "CPI", "name": "Consumer Price Index (Apr)", "impact": "HIGH" },
+    { "date": "2026-05-13", "time": "08:30", "event": "PPI", "name": "Producer Price Index (Apr)", "impact": "HIGH" },
+    { "date": "2026-05-28", "time": "08:30", "event": "GDP", "name": "GDP Second Estimate (Q1)", "impact": "MEDIUM" },
+
+    { "date": "2026-06-05", "time": "08:30", "event": "NFP", "name": "Non-Farm Payrolls (May)", "impact": "HIGH" },
+    { "date": "2026-06-10", "time": "08:30", "event": "CPI", "name": "Consumer Price Index (May)", "impact": "HIGH" },
+    { "date": "2026-06-11", "time": "08:30", "event": "PPI", "name": "Producer Price Index (May)", "impact": "HIGH" },
+    { "date": "2026-06-17", "time": "14:00", "event": "FOMC", "name": "FOMC Rate Decision + SEP + Dot Plot", "impact": "HIGH" },
+    { "date": "2026-06-25", "time": "08:30", "event": "GDP", "name": "GDP Third Estimate (Q1)", "impact": "MEDIUM" },
+
+    { "date": "2026-07-02", "time": "08:30", "event": "NFP", "name": "Non-Farm Payrolls (Jun)", "impact": "HIGH" },
+    { "date": "2026-07-14", "time": "08:30", "event": "CPI", "name": "Consumer Price Index (Jun)", "impact": "HIGH" },
+    { "date": "2026-07-15", "time": "08:30", "event": "PPI", "name": "Producer Price Index (Jun)", "impact": "HIGH" },
+    { "date": "2026-07-29", "time": "14:00", "event": "FOMC", "name": "FOMC Rate Decision", "impact": "HIGH" },
+    { "date": "2026-07-30", "time": "08:30", "event": "GDP", "name": "GDP Advance (Q2)", "impact": "HIGH" },
+
+    { "date": "2026-08-07", "time": "08:30", "event": "NFP", "name": "Non-Farm Payrolls (Jul)", "impact": "HIGH" },
+    { "date": "2026-08-12", "time": "08:30", "event": "CPI", "name": "Consumer Price Index (Jul)", "impact": "HIGH" },
+    { "date": "2026-08-13", "time": "08:30", "event": "PPI", "name": "Producer Price Index (Jul)", "impact": "HIGH" },
+    { "date": "2026-08-27", "time": "08:30", "event": "GDP", "name": "GDP Second Estimate (Q2)", "impact": "MEDIUM" },
+
+    { "date": "2026-09-04", "time": "08:30", "event": "NFP", "name": "Non-Farm Payrolls (Aug)", "impact": "HIGH" },
+    { "date": "2026-09-10", "time": "08:30", "event": "CPI", "name": "Consumer Price Index (Aug)", "impact": "HIGH" },
+    { "date": "2026-09-11", "time": "08:30", "event": "PPI", "name": "Producer Price Index (Aug)", "impact": "HIGH" },
+    { "date": "2026-09-16", "time": "14:00", "event": "FOMC", "name": "FOMC Rate Decision + SEP + Dot Plot", "impact": "HIGH" },
+    { "date": "2026-09-24", "time": "08:30", "event": "GDP", "name": "GDP Third Estimate (Q2)", "impact": "MEDIUM" },
+
+    { "date": "2026-10-02", "time": "08:30", "event": "NFP", "name": "Non-Farm Payrolls (Sep)", "impact": "HIGH" },
+    { "date": "2026-10-13", "time": "08:30", "event": "CPI", "name": "Consumer Price Index (Sep)", "impact": "HIGH" },
+    { "date": "2026-10-14", "time": "08:30", "event": "PPI", "name": "Producer Price Index (Sep)", "impact": "HIGH" },
+    { "date": "2026-10-28", "time": "14:00", "event": "FOMC", "name": "FOMC Rate Decision", "impact": "HIGH" },
+    { "date": "2026-10-29", "time": "08:30", "event": "GDP", "name": "GDP Advance (Q3)", "impact": "HIGH" },
+
+    { "date": "2026-11-06", "time": "08:30", "event": "NFP", "name": "Non-Farm Payrolls (Oct)", "impact": "HIGH" },
+    { "date": "2026-11-12", "time": "08:30", "event": "CPI", "name": "Consumer Price Index (Oct)", "impact": "HIGH" },
+    { "date": "2026-11-13", "time": "08:30", "event": "PPI", "name": "Producer Price Index (Oct)", "impact": "HIGH" },
+    { "date": "2026-11-25", "time": "08:30", "event": "GDP", "name": "GDP Second Estimate (Q3)", "impact": "MEDIUM" },
+
+    { "date": "2026-12-04", "time": "08:30", "event": "NFP", "name": "Non-Farm Payrolls (Nov)", "impact": "HIGH" },
+    { "date": "2026-12-09", "time": "14:00", "event": "FOMC", "name": "FOMC Rate Decision + SEP + Dot Plot", "impact": "HIGH" },
+    { "date": "2026-12-10", "time": "08:30", "event": "CPI", "name": "Consumer Price Index (Nov)", "impact": "HIGH" },
+    { "date": "2026-12-11", "time": "08:30", "event": "PPI", "name": "Producer Price Index (Nov)", "impact": "HIGH" },
+    { "date": "2026-12-23", "time": "08:30", "event": "GDP", "name": "GDP Third Estimate (Q3)", "impact": "MEDIUM" }
+  ]
+}

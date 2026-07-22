@@ -1,0 +1,223 @@
+/**
+ * PREDATOR LARGE WALLS SIDECAR v2
+ *
+ * Polls CoinGlass for current large resting limit orders (passive walls)
+ * on ETH and BTC, plus Binance mark price for wall-distance context.
+ * - Serves live data via HTTP for NinjaTrader indicators
+ * - Logs top-N walls to monthly CSV files (auto-rollover when month changes)
+ *
+ * v2 changes:
+ *   - mark_price added per asset (Binance fapi premiumIndex, free, no key)
+ *   - CSV bug fix: field is limit_price, not price (v1 logged "undefined")
+ *   - CSV volume cap: logs top LOG_TOP_N walls per side (live endpoint unaffected)
+ *   - CSV gains spot + order_state columns  ->  new file suffix _v2_
+ *
+ * Run: pm2 start predator-large-walls.js --name predator-walls
+ */
+
+require('dotenv').config();
+const https = require('https');
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const COINGLASS_API_KEY = process.env.COINGLASS_API_KEY;
+if (!COINGLASS_API_KEY) {
+    console.error('[WALLS] ERROR: COINGLASS_API_KEY not found in .env file');
+    process.exit(1);
+}
+
+const POLL_INTERVAL_MS = 2 * 60 * 1000;        // 2 min - walls are slow structure, NT reads every 5 min
+const MIN_WALL_USD = 500000;
+const GLOBAL_TOP_N = 5;                        // tier 1: biggest walls anywhere (fortress heartbeat)
+const BATTLE_TOP_N = 10;                       // tier 2: biggest walls near spot (fill-vs-vanish research)
+const BATTLE_PCT = 5;                          // battleground radius, % from spot
+const BASE_URL = 'https://open-api-v4.coinglass.com';
+const SYMBOLS = ['ETHUSDT', 'BTCUSDT'];
+
+let latestData = {
+    timestamp: null,
+    eth: { mark_price: null, sell_walls: [], buy_walls: [] },
+    btc: { mark_price: null, sell_walls: [], buy_walls: [] }
+};
+
+// === Monthly CSV handling ===
+function getMonthlyFilename() {
+    const d = new Date();
+    const ym = d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0');
+    return path.join(__dirname, 'large_walls_v3_' + ym + '.csv');
+}
+
+const HEADER = 'qld_time,timestamp,symbol,side,tier,limit_price,current_usd_value,mark_price,dist_pct,order_state\n';
+
+function ensureCSV(file) {
+    if (!fs.existsSync(file)) {
+        fs.writeFileSync(file, HEADER);
+    }
+}
+
+function qldNow() {
+    const d = new Date(Date.now() + 10 * 60 * 60 * 1000);
+    const p = n => String(n).padStart(2, '0');
+    return d.getUTCFullYear() + '-' + p(d.getUTCMonth() + 1) + '-' + p(d.getUTCDate()) + ' '
+         + p(d.getUTCHours()) + ':' + p(d.getUTCMinutes()) + ':' + p(d.getUTCSeconds());
+}
+
+function fetchLargeOrders(symbol) {
+    return new Promise((resolve, reject) => {
+        const url = `${BASE_URL}/api/futures/orderbook/large-limit-order?exchange=Binance&symbol=${symbol}`;
+        const options = {
+            headers: { 'CG-API-KEY': COINGLASS_API_KEY },
+            timeout: 15000
+        };
+
+        const req = https.get(url, options, (res) => {
+            let body = '';
+            res.on('data', chunk => body += chunk);
+            res.on('end', () => {
+                try {
+                    const json = JSON.parse(body);
+                    if (json.code === '0' && Array.isArray(json.data)) {
+                        resolve(json.data);
+                    } else {
+                        reject(new Error(json.msg || 'bad response'));
+                    }
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        });
+
+        req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
+        req.on('error', reject);
+    });
+}
+
+// Coinbase public spot price. No key, no geo-block on US droplets, no CoinGlass credits.
+// Spot vs Binance perp mark differ by a few bps - irrelevant at wall-distance resolution.
+// (Binance fapi is geo-blocked from US-region VPS IPs - returns a restricted-location body.)
+const SPOT_PAIRS = { ETHUSDT: 'ETH-USD', BTCUSDT: 'BTC-USD' };
+
+function fetchMarkPrice(symbol) {
+    return new Promise((resolve, reject) => {
+        const pair = SPOT_PAIRS[symbol];
+        if (!pair) return reject(new Error('no spot pair mapped for ' + symbol));
+
+        const url = `https://api.coinbase.com/v2/prices/${pair}/spot`;
+        const req = https.get(url, { timeout: 10000 }, (res) => {
+            let body = '';
+            res.on('data', chunk => body += chunk);
+            res.on('end', () => {
+                try {
+                    const json = JSON.parse(body);
+                    const mp = parseFloat(json && json.data && json.data.amount);
+                    if (isFinite(mp) && mp > 0) resolve(mp);
+                    else reject(new Error('no price in response: ' + body.slice(0, 120)));
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        });
+        req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
+        req.on('error', reject);
+    });
+}
+
+function logWallsToCSV(csvFile, symbol, side, walls, markPrice) {
+    const ts = new Date().toISOString();
+    const qld = qldNow();
+    const haveSpot = isFinite(markPrice) && markPrice > 0;
+
+    // Tier 1: biggest walls anywhere (walls arrive pre-sorted by size desc)
+    const globalIds = new Set(walls.slice(0, GLOBAL_TOP_N).map(w => w.id));
+
+    // Tier 2: biggest walls within BATTLE_PCT of spot (needs mark price)
+    const nearIds = new Set();
+    if (haveSpot) {
+        walls
+            .filter(w => {
+                const lp = parseFloat(w.limit_price);
+                return isFinite(lp) && Math.abs(lp - markPrice) / markPrice * 100 <= BATTLE_PCT;
+            })
+            .slice(0, BATTLE_TOP_N)
+            .forEach(w => nearIds.add(w.id));
+    }
+
+    walls.forEach(w => {
+        const isGlobal = globalIds.has(w.id);
+        const isNear = nearIds.has(w.id);
+        if (!isGlobal && !isNear) return;
+
+        const tier = (isGlobal && isNear) ? 'both' : (isGlobal ? 'global' : 'near');
+        const lp = parseFloat(w.limit_price);
+        const distPct = (haveSpot && isFinite(lp))
+            ? (((lp - markPrice) / markPrice) * 100).toFixed(3)
+            : '';
+        fs.appendFileSync(csvFile,
+            `${qld},${ts},${symbol},${side},${tier},${w.limit_price},${w.current_usd_value},${haveSpot ? markPrice : ''},${distPct},${w.order_state}\n`);
+    });
+}
+
+async function updateWalls() {
+    const startedQld = qldNow();
+
+    for (const symbol of SYMBOLS) {
+        const asset = symbol === 'ETHUSDT' ? 'eth' : 'btc';
+
+        // Mark price first: failure here shouldn't kill the walls update.
+        try {
+            latestData[asset].mark_price = await fetchMarkPrice(symbol);
+        } catch (e) {
+            console.log(`[WALLS] ${startedQld} MARK PRICE FAILED for ${symbol}: ${e.message} (keeping last: ${latestData[asset].mark_price})`);
+        }
+
+        try {
+            const orders = await fetchLargeOrders(symbol);
+
+            const sellWalls = orders
+                .filter(o => o.order_side === 1 && parseFloat(o.current_usd_value) >= MIN_WALL_USD)
+                .sort((a, b) => parseFloat(b.current_usd_value) - parseFloat(a.current_usd_value));
+
+            const buyWalls = orders
+                .filter(o => o.order_side === 2 && parseFloat(o.current_usd_value) >= MIN_WALL_USD)
+                .sort((a, b) => parseFloat(b.current_usd_value) - parseFloat(a.current_usd_value));
+
+            latestData[asset].sell_walls = sellWalls;
+            latestData[asset].buy_walls = buyWalls;
+
+            const csvFile = getMonthlyFilename();
+            ensureCSV(csvFile);
+            const mp = latestData[asset].mark_price;
+
+            logWallsToCSV(csvFile, symbol, 'sell', sellWalls, mp);
+            logWallsToCSV(csvFile, symbol, 'buy',  buyWalls,  mp);
+
+        } catch (e) {
+            console.log(`[WALLS] ${startedQld} FETCH FAILED for ${symbol}: ${e.message}`);
+        }
+    }
+
+    latestData.timestamp = new Date().toISOString();
+    console.log(`[WALLS] ${startedQld} Updated - ETH mark: ${latestData.eth.mark_price} sell: ${latestData.eth.sell_walls.length}, buy: ${latestData.eth.buy_walls.length} | BTC mark: ${latestData.btc.mark_price} sell: ${latestData.btc.sell_walls.length}, buy: ${latestData.btc.buy_walls.length}`);
+}
+
+function startServer() {
+    const server = http.createServer((req, res) => {
+        if (req.url === '/api/orderbook/live') {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(latestData));
+        } else {
+            res.writeHead(404);
+            res.end('Not found');
+        }
+    });
+
+    server.listen(3001, '0.0.0.0', () => {
+        console.log('[WALLS] HTTP server listening on port 3001 -> /api/orderbook/live');
+    });
+}
+
+console.log('[WALLS] Predator Large Walls sidecar v3 starting (two-tier CSV: global top-' + GLOBAL_TOP_N + ' + near top-' + BATTLE_TOP_N + ' within ' + BATTLE_PCT + '%, Coinbase spot)...');
+updateWalls();
+setInterval(updateWalls, POLL_INTERVAL_MS);
+startServer();

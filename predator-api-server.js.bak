@@ -1,0 +1,146 @@
+/**
+ * PREDATOR REGIME API v1.0
+ * 
+ * REST API server that serves regime state and history.
+ * NinjaTrader polls this every minute.
+ * 
+ * Endpoints:
+ *   GET /api/current     — current regime state + filter details
+ *   GET /api/history     — all regime changes + scanner events
+ *   GET /api/history?from=2026-04-10T00:00  — filtered by time
+ *   GET /api/health      — server health check
+ *   POST /api/reset      — manual regime reset to FLAT
+ * 
+ * Run with: pm2 start predator-api-server.js --name predator-api
+ */
+
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+const PORT = process.env.API_PORT || 3000;
+
+// State and history files (written by regime engine)
+const STATE_FILE = path.join(__dirname, 'regime_state.json');
+const HISTORY_FILE = path.join(__dirname, 'regime_history.json');
+
+// ═══════════════════════════════════════════════════════════════
+// ENDPOINTS
+// ═══════════════════════════════════════════════════════════════
+
+/**
+ * GET /api/current
+ * Returns the current regime state.
+ * NinjaTrader polls this every minute.
+ */
+app.get('/api/current', (req, res) => {
+    try {
+        if (!fs.existsSync(STATE_FILE)) {
+            return res.json({
+                regime: 'FLAT',
+                error: 'No state file yet — engine not running',
+                timestamp: new Date().toISOString(),
+            });
+        }
+        const state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+        res.json(state);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/**
+ * GET /api/history
+ * Returns regime changes and scanner events.
+ * Optional: ?from=ISO_TIMESTAMP to filter
+ * Optional: ?type=regime|base|eth to filter by event type
+ */
+app.get('/api/history', (req, res) => {
+    try {
+        if (!fs.existsSync(HISTORY_FILE)) {
+            return res.json({
+                regime_changes: [],
+                base_events: [],
+                eth_events: [],
+            });
+        }
+
+        const history = JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
+        const from = req.query.from ? new Date(req.query.from).getTime() : 0;
+        const type = req.query.type; // optional filter
+
+        const result = {};
+
+        if (!type || type === 'regime') {
+            result.regime_changes = history.regime_changes
+                .filter(r => new Date(r.timestamp).getTime() >= from);
+        }
+
+        if (!type || type === 'base') {
+            result.base_events = (history.base_events || [])
+                .filter(r => new Date(r.timestamp).getTime() >= from);
+        }
+
+        if (!type || type === 'eth') {
+            result.eth_events = (history.eth_events || [])
+                .filter(r => new Date(r.timestamp).getTime() >= from);
+        }
+
+        res.json(result);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/**
+ * GET /api/health
+ * Quick health check
+ */
+app.get('/api/health', (req, res) => {
+    let stateAge = null;
+    try {
+        if (fs.existsSync(STATE_FILE)) {
+            const stat = fs.statSync(STATE_FILE);
+            stateAge = Math.round((Date.now() - stat.mtimeMs) / 1000);
+        }
+    } catch (e) { /* ignore */ }
+
+    res.json({
+        status: 'ok',
+        uptime: process.uptime(),
+        state_file_age_seconds: stateAge,
+        state_file_stale: stateAge !== null && stateAge > 120, // warn if >2 min old
+    });
+});
+
+/**
+ * POST /api/reset
+ * Manual regime reset to FLAT
+ */
+app.post('/api/reset', (req, res) => {
+    try {
+        if (fs.existsSync(STATE_FILE)) {
+            const state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+            state.regime = 'FLAT';
+            state.regime_since = new Date().toISOString();
+            fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+        }
+        res.json({ success: true, regime: 'FLAT' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// ═══════════════════════════════════════════════════════════════
+// START SERVER
+// ═══════════════════════════════════════════════════════════════
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`[PREDATOR API] Running on port ${PORT}`);
+    console.log(`[PREDATOR API] Endpoints:`);
+    console.log(`  GET  http://137.184.36.230:${PORT}/api/current`);
+    console.log(`  GET  http://137.184.36.230:${PORT}/api/history`);
+    console.log(`  GET  http://137.184.36.230:${PORT}/api/health`);
+    console.log(`  POST http://137.184.36.230:${PORT}/api/reset`);
+});

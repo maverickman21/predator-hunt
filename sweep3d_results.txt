@@ -1,0 +1,26 @@
+SWEEP 3D - POSITION-RELATIVE BELL  2026-07-18T20:09:05.096Z
+
+=== bar P95 / gap P90 ===
+  LONG Tue->Wed (ring @Wed05:23)  got:no-target-ring  rings-in-window: 0  FAIL
+  SHORT Thu->Fri (SILENT @Thu23:52)  got:RING@07-17 00:01  rings-in-window: 4  [07-16 23:01 | 07-17 00:01 | 07-17 00:57 | 07-17 01:44]  FAIL
+  SHORT Fri->Sat (ring @Fri23:59)  got:RING@07-17 23:21  rings-in-window: 4  [07-17 11:10 | 07-17 16:38 | 07-17 23:21 | 07-17 23:58]  PASS
+  SCORE 1/3
+
+=== bar P95 / gap P95 ===
+  LONG Tue->Wed (ring @Wed05:23)  got:no-target-ring  rings-in-window: 0  FAIL
+  SHORT Thu->Fri (SILENT @Thu23:52)  got:RING@07-17 00:01  rings-in-window: 3  [07-16 23:01 | 07-17 00:01 | 07-17 01:44]  FAIL
+  SHORT Fri->Sat (ring @Fri23:59)  got:RING@07-17 23:21  rings-in-window: 3  [07-17 16:38 | 07-17 23:21 | 07-17 23:58]  PASS
+  SCORE 1/3
+
+=== bar P98 / gap P90 ===
+  LONG Tue->Wed (ring @Wed05:23)  got:no-target-ring  rings-in-window: 0  FAIL
+  SHORT Thu->Fri (SILENT @Thu23:52)  got:RING@07-16 23:12  rings-in-window: 4  [07-16 23:12 | 07-17 00:22 | 07-17 00:57 | 07-17 01:44]  FAIL
+  SHORT Fri->Sat (ring @Fri23:59)  got:RING@07-17 23:58  rings-in-window: 2  [07-17 16:38 | 07-17 23:58]  PASS
+  SCORE 1/3
+
+=== bar P98 / gap P95 ===
+  LONG Tue->Wed (ring @Wed05:23)  got:no-target-ring  rings-in-window: 0  FAIL
+  SHORT Thu->Fri (SILENT @Thu23:52)  got:RING@07-16 23:12  rings-in-window: 3  [07-16 23:12 | 07-17 00:22 | 07-17 01:44]  FAIL
+  SHORT Fri->Sat (ring @Fri23:59)  got:RING@07-17 23:58  rings-in-window: 2  [07-17 16:38 | 07-17 23:58]  PASS
+  SCORE 1/3
+

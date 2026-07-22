@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-07-22T08:57:26.776Z",
+  "regime": "LONG",
+  "regime_since": "2026-06-25T04:45:22.645Z",
+  "pair1": {
+    "h1_current": 0.07,
+    "h1_consecutive": -3,
+    "h1_direction": "deteriorating",
+    "h4_current": -0.59,
+    "h4_gate": "open_short",
+    "h4_consecutive": 2,
+    "h4_direction": "neutral",
+    "ready": true,
+    "go": true
+  },
+  "pair2": {
+    "liq_pct": 2.520700048409767,
+    "liq_extreme": true,
+    "liq_extreme_side": "short_exhausted",
+    "liq_vol": 0.71921646953977,
+    "liq_vol_magnitude": 0.01302735179000003,
+    "liq_pct_magnitude": 0.0652958548709579,
+    "ready": true,
+    "go": false
+  },
+  "correlation": {
+    "synced": 0,
+    "total": 0,
+    "ratio": 0,
+    "ok": false
+  },
+  "conditions": {
+    "long": {
+      "pair1_ready": false,
+      "pair1_go": false,
+      "pair2_ready": false,
+      "pair2_go": false,
+      "corr_ok": false,
+      "macro_allowed": true
+    },
+    "short": {
+      "pair1_ready": true,
+      "pair1_go": true,
+      "pair2_ready": true,
+      "pair2_go": false,
+      "corr_ok": false,
+      "macro_allowed": true
+    },
+    "mode": "holding"
+  },
+  "macro": {
+    "bias": "UNKNOWN",
+    "reason": "Macro bias stale (>4hrs)",
+    "confidence": "LOW"
+  },
+  "prices": {
+    "eth": 1918.4933,
+    "nq": 0
+  },
+  "context": {
+    "funding": -0.000088,
+    "ls_long": 51.83,
+    "yellows": 0
+  },
+  "base_scanner": {
+    "black_blocks": 0
+  },
+  "eth_scanner": {
+    "black_blocks": 0
+  }
+}

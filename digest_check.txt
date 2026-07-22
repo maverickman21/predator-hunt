@@ -1,0 +1,47 @@
+[TAILING] Tailing last 20 lines for [predator-api] process (change the value with --lines option)
+/root/.pm2/logs/predator-api-error.log last 20 lines:
+2|predator |     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2|predator |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2|predator |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2|predator |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2|predator |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2|predator | /root/predator-hunt/predator-api-server.js:28
+2|predator | const NQ_PRICE_FILE = path.join(__dirname, 'nq_price.json');
+2|predator |       ^
+2|predator | 
+2|predator | SyntaxError: Identifier 'NQ_PRICE_FILE' has already been declared
+2|predator |     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2|predator |     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2|predator |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2|predator |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2|predator |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2|predator |     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2|predator |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2|predator |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2|predator |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2|predator |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+
+/root/.pm2/logs/predator-api-out.log last 20 lines:
+2|predator |   GET  http://137.184.36.230:3000/api/current
+2|predator |   GET  http://137.184.36.230:3000/api/history
+2|predator |   GET  http://137.184.36.230:3000/api/health
+2|predator |   POST http://137.184.36.230:3000/api/reset
+2|predator | [PREDATOR API] Running on port 3000
+2|predator | [PREDATOR API] Endpoints:
+2|predator |   GET  http://137.184.36.230:3000/api/current
+2|predator |   GET  http://137.184.36.230:3000/api/history
+2|predator |   GET  http://137.184.36.230:3000/api/health
+2|predator |   POST http://137.184.36.230:3000/api/reset
+2|predator | [digest] loading history...
+2|predator | [digest] funding pts: 7474, rows: 7474, gridRank: 1153
+2|predator | [digest] live, refreshing every 60s
+2|predator | [PREDATOR API] Running on port 3000
+2|predator | [PREDATOR API] Endpoints:
+2|predator |   GET  http://137.184.36.230:3000/api/current
+2|predator |   GET  http://137.184.36.230:3000/api/history
+2|predator |   GET  http://137.184.36.230:3000/api/health
+2|predator |   POST http://137.184.36.230:3000/api/reset
+2|predator |   GET  http://137.184.36.230:3000/api/digest
+
+---- DIGEST JSON ----
+{"ts":"2026-07-20T23:02:21.248Z","qld":"2026-07-21 09:02","gate":{"armed":"NONE","rank":0.4189189189189189,"level":0.003734,"saturated":false,"slopeGreenFrac":0.2692307692307692},"trigger":{"episode":{"dOIc":0,"dOIu_M":0,"delta_M":0,"liqL_M":0,"liqS_M":0},"vote":false,"thumbRank":0,"floorRank":0,"sized":false,"blackout":false,"weekend":false,"fire":false,"stamps":{"authored":0,"full_house":false}},"bells":{"barRank":0.307,"destruction":true,"gapSigned":-0.000567,"gapRank":0.658,"frRank":0.419,"victimLongRank":0,"victimShortRank":0,"bellB_short":false,"bellA_short":false,"bellB_long":false,"bellA_long":false,"shadow":true},"walls":"pending v1.1","dataAge":{"pillars_s":81,"liqs_s":1274},"version":"digest-v1 / constitution 2026-07-19"}

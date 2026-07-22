@@ -1,0 +1,40 @@
+SWEEP 2D - STOP-AND-REARM  2026-07-18T04:08:49.606Z
+
+=== strict ep15/P90-90m/P60-360m ===
+  07-06 19:35 SHORT @1756.9  MFE 1.57% @23:18  MAE-first 0.87%  no
+  07-06 22:10 SHORT @1740.6  MFE 0.65% @23:18  MAE-first 0.50%  no
+  07-07 15:44 LONG @1766.5  MFE 2.26% @02:51  MAE-first 0.35%  WIN
+  07-13 08:48 SHORT @1798.1  MFE 1.36% @15:00  MAE-first 2.20%  no
+  07-13 13:07 SHORT @1790.7  MFE 1.57% @23:48  MAE-first 0.12%  WIN
+  07-14 03:55 SHORT @1757.6  MFE 0.42% @04:20  MAE-first 0.02%  no
+  07-14 05:44 LONG @1768.3  MFE 1.25% @11:27  MAE-first 0.95%  no
+  07-14 08:00 LONG @1760.1  MFE 1.73% @11:27  MAE-first 0.32%  WIN
+  07-15 20:24 SHORT @1877.9  MFE 0.21% @20:36  MAE-first 0.00%  no
+  07-16 04:52 SHORT @1923.3  MFE 0.78% @11:21  MAE-first 0.19%  no
+  07-16 17:45 SHORT @1905.0  MFE 2.17% @03:56  MAE-first 0.24%  WIN
+  07-17 08:35 SHORT @1874.0  MFE 2.91% @18:40  MAE-first 0.00%  WIN
+  07-17 18:37 SHORT @1820.2  MFE 0.93% @23:39  MAE-first 1.07%  no
+  entries: 13  wins(>=1% MFE, <=0.75% MAE-first): 5  adds logged: 50
+
+=== loose  ep10/P85-60m/P50-240m ===
+  07-06 12:11 SHORT @1779.7  MFE 2.83% @23:18  MAE-first 0.39%  WIN
+  07-06 16:55 SHORT @1767.8  MFE 2.18% @23:18  MAE-first 0.41%  WIN
+  07-06 19:35 SHORT @1756.9  MFE 1.57% @23:18  MAE-first 0.87%  no
+  07-06 22:44 SHORT @1738.7  MFE 0.54% @23:18  MAE-first 0.23%  no
+  07-07 15:38 LONG @1767.0  MFE 2.23% @02:51  MAE-first 0.37%  WIN
+  07-13 08:47 SHORT @1797.5  MFE 1.33% @15:00  MAE-first 2.23%  no
+  07-13 13:07 SHORT @1790.7  MFE 0.96% @15:00  MAE-first 0.12%  no
+  07-13 16:39 SHORT @1774.1  MFE 0.00% @16:39  MAE-first 0.00%  no
+  07-13 17:11 LONG @1777.6  MFE 0.71% @18:51  MAE-first 0.00%  no
+  07-14 03:55 SHORT @1757.6  MFE 0.42% @04:20  MAE-first 0.02%  no
+  07-14 05:34 LONG @1768.6  MFE 1.24% @11:27  MAE-first 0.96%  no
+  07-14 07:55 LONG @1756.8  MFE 1.91% @11:27  MAE-first 0.14%  WIN
+  07-15 20:24 SHORT @1877.9  MFE 0.21% @20:36  MAE-first 0.00%  no
+  07-16 04:25 SHORT @1928.5  MFE 1.05% @11:21  MAE-first 0.18%  WIN
+  07-16 17:45 SHORT @1905.0  MFE 1.97% @22:42  MAE-first 0.24%  WIN
+  07-16 22:55 LONG @1872.5  MFE 0.89% @00:12  MAE-first 0.13%  no
+  07-17 08:30 SHORT @1872.6  MFE 2.84% @18:40  MAE-first 0.08%  WIN
+  07-17 18:36 SHORT @1822.8  MFE 1.07% @23:39  MAE-first 0.93%  no
+  07-17 23:34 SHORT @1809.5  MFE 0.34% @23:39  MAE-first 0.00%  no
+  entries: 19  wins(>=1% MFE, <=0.75% MAE-first): 7  adds logged: 61
+

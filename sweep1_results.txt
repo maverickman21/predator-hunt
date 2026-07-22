@@ -1,0 +1,111 @@
+SWEEP 1 - FUNDING GATE  (2026-07-18T00:21:44.683Z)
+series 2026-04-11 -> 2026-07-18, 97727 pts
+
+=== P80 / lookback 7d ===
+  armed SHORT 25.1% of time, LONG 21.3%
+  2026-07-13 want:SHORT got:LONG (S:0m L:845m) FAIL
+  2026-07-14 want:LONG got:LONG (S:105m L:370m) PASS
+  2026-07-15 want:NONE got:SHORT (S:445m L:0m) FAIL
+  2026-07-16 want:SHORT got:SHORT (S:545m L:165m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:415m L:90m) PASS
+  July armed days: 01S 02S 03S 04S 05S 06S 07L 08L 09L 10L 11S 12L 13L 14L 15S 16S 17S
+
+=== P85 / lookback 7d ===
+  armed SHORT 19.2% of time, LONG 17.3%
+  2026-07-13 want:SHORT got:LONG (S:0m L:745m) FAIL
+  2026-07-14 want:LONG got:LONG (S:80m L:335m) PASS
+  2026-07-15 want:NONE got:SHORT (S:395m L:0m) FAIL
+  2026-07-16 want:SHORT got:SHORT (S:440m L:160m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:335m L:65m) PASS
+  July armed days: 01S 02S 03S 04S 05S 06S 07L 08L 09L 10L 11S 12L 13L 14L 15S 16S 17S
+
+=== P90 / lookback 7d ===
+  armed SHORT 13.6% of time, LONG 13.0%
+  2026-07-13 want:SHORT got:LONG (S:0m L:480m) FAIL
+  2026-07-14 want:LONG got:LONG (S:50m L:305m) PASS
+  2026-07-15 want:NONE got:SHORT (S:320m L:0m) FAIL
+  2026-07-16 want:SHORT got:SHORT (S:425m L:135m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:290m L:25m) PASS
+  July armed days: 01S 02S 03S 04S 05S 07L 08L 09L 10L 11L 12L 13L 14L 15S 16S 17S
+
+=== P95 / lookback 7d ===
+  armed SHORT 7.3% of time, LONG 8.4%
+  2026-07-13 want:SHORT got:LONG (S:0m L:255m) FAIL
+  2026-07-14 want:LONG got:LONG (S:30m L:280m) PASS
+  2026-07-15 want:NONE got:SHORT (S:190m L:0m) FAIL
+  2026-07-16 want:SHORT got:SHORT (S:340m L:120m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:210m L:10m) PASS
+  July armed days: 01S 02S 03S 04S 05S 07L 08L 12L 13L 14L 15S 16S 17S
+
+=== P80 / lookback 14d ===
+  armed SHORT 27.0% of time, LONG 17.7%
+  2026-07-13 want:SHORT got:LONG (S:0m L:955m) FAIL
+  2026-07-14 want:LONG got:LONG (S:30m L:670m) PASS
+  2026-07-15 want:NONE got:SHORT (S:205m L:20m) FAIL
+  2026-07-16 want:SHORT got:SHORT (S:395m L:200m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:290m L:180m) PASS
+  July armed days: 01S 02S 03S 04S 05S 06S 07S 08S 09S 11S 12L 13L 14L 15S 16S 17S
+
+=== P85 / lookback 14d ===
+  armed SHORT 20.9% of time, LONG 14.1%
+  2026-07-13 want:SHORT got:LONG (S:0m L:770m) FAIL
+  2026-07-14 want:LONG got:LONG (S:5m L:410m) PASS
+  2026-07-15 want:NONE got:SHORT (S:130m L:0m) FAIL
+  2026-07-16 want:SHORT got:SHORT (S:375m L:180m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:250m L:140m) PASS
+  July armed days: 01S 02S 03S 04S 05S 06S 07S 11S 12L 13L 14L 15S 16S 17S
+
+=== P90 / lookback 14d ===
+  armed SHORT 14.3% of time, LONG 10.3%
+  2026-07-13 want:SHORT got:LONG (S:0m L:440m) FAIL
+  2026-07-14 want:LONG got:LONG (S:0m L:340m) PASS
+  2026-07-15 want:NONE got:SHORT (S:90m L:0m) FAIL
+  2026-07-16 want:SHORT got:SHORT (S:325m L:160m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:215m L:65m) PASS
+  July armed days: 01S 02S 03S 04S 05S 06S 07S 11S 12L 13L 14L 15S 16S 17S
+
+=== P95 / lookback 14d ===
+  armed SHORT 6.6% of time, LONG 6.5%
+  2026-07-13 want:SHORT got:LONG (S:0m L:280m) FAIL
+  2026-07-14 want:LONG got:LONG (S:0m L:295m) PASS
+  2026-07-15 want:NONE got:NONE (S:0m L:0m) PASS
+  2026-07-16 want:SHORT got:SHORT (S:240m L:125m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:100m L:20m) PASS
+  July armed days: 01S 02S 03S 04S 05S 13L 14L 16S 17S
+
+=== P80 / lookback 30d ===
+  armed SHORT 28.0% of time, LONG 12.5%
+  2026-07-13 want:SHORT got:LONG (S:0m L:85m) FAIL
+  2026-07-14 want:LONG got:LONG (S:105m L:270m) PASS
+  2026-07-15 want:NONE got:SHORT (S:470m L:0m) FAIL
+  2026-07-16 want:SHORT got:SHORT (S:575m L:125m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:435m L:25m) PASS
+  July armed days: 01S 02S 03S 04S 05S 06S 07S 08S 09S 10S 11S 12S 13L 14L 15S 16S 17S
+
+=== P85 / lookback 30d ===
+  armed SHORT 21.2% of time, LONG 9.2%
+  2026-07-13 want:SHORT got:NONE (S:0m L:0m) FAIL
+  2026-07-14 want:LONG got:LONG (S:50m L:225m) PASS
+  2026-07-15 want:NONE got:SHORT (S:390m L:0m) FAIL
+  2026-07-16 want:SHORT got:SHORT (S:435m L:105m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:345m L:5m) PASS
+  July armed days: 01S 02S 03S 04S 05S 06S 07S 08S 09S 10S 11S 14L 15S 16S 17S
+
+=== P90 / lookback 30d ===
+  armed SHORT 14.8% of time, LONG 6.7%
+  2026-07-13 want:SHORT got:NONE (S:0m L:0m) FAIL
+  2026-07-14 want:LONG got:LONG (S:30m L:90m) PASS
+  2026-07-15 want:NONE got:SHORT (S:200m L:0m) FAIL
+  2026-07-16 want:SHORT got:SHORT (S:390m L:5m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:290m L:0m) PASS
+  July armed days: 01S 02S 03S 04S 05S 06S 07S 08S 09S 11S 14L 15S 16S 17S
+
+=== P95 / lookback 30d ===
+  armed SHORT 8.2% of time, LONG 3.3%
+  2026-07-13 want:SHORT got:NONE (S:0m L:0m) FAIL
+  2026-07-14 want:LONG got:NONE (S:0m L:0m) FAIL
+  2026-07-15 want:NONE got:SHORT (S:85m L:0m) FAIL
+  2026-07-16 want:SHORT got:SHORT (S:320m L:0m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:215m L:0m) PASS
+  July armed days: 02S 03S 04S 05S 06S 07S 11S 15S 16S 17S
+

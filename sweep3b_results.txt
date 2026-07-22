@@ -1,0 +1,30 @@
+SWEEP 3B - PEAK-BAR BELL  2026-07-18T19:52:38.725Z
+
+=== authored F>=1 / gap P90 ===
+  Tue 05:23 exit  want:RING  got:silent  FAIL
+  Fri 23:59 exit  want:RING  got:silent  FAIL
+  Thu 23:52 SHAKEOUT  want:SILENT  got:silent  PASS
+  SCORE 1/3   total rings: 0
+  all rings: 
+
+=== authored F>=1 / gap P95 ===
+  Tue 05:23 exit  want:RING  got:silent  FAIL
+  Fri 23:59 exit  want:RING  got:silent  FAIL
+  Thu 23:52 SHAKEOUT  want:SILENT  got:silent  PASS
+  SCORE 1/3   total rings: 0
+  all rings: 
+
+=== authored F>=1.5 / gap P90 ===
+  Tue 05:23 exit  want:RING  got:silent  FAIL
+  Fri 23:59 exit  want:RING  got:silent  FAIL
+  Thu 23:52 SHAKEOUT  want:SILENT  got:silent  PASS
+  SCORE 1/3   total rings: 0
+  all rings: 
+
+=== authored F>=1.5 / gap P95 ===
+  Tue 05:23 exit  want:RING  got:silent  FAIL
+  Fri 23:59 exit  want:RING  got:silent  FAIL
+  Thu 23:52 SHAKEOUT  want:SILENT  got:silent  PASS
+  SCORE 1/3   total rings: 0
+  all rings: 
+

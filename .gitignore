@@ -1,0 +1,9 @@
+node_modules/
+*.bak_*
+*.log
+.env
+sheets-key.json
+*.bak-*
+*.bak.*
+*.bak2
+eth_signals_v2_2026-06.csv

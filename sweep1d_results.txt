@@ -1,0 +1,74 @@
+SWEEP 1D - NQ-CLOCK LATCH + 3H SMOKE  (base P95/14d)  2026-07-18T01:12:55.096Z
+
+=== mem P92 / latch 24h(NQ-clock) / smoke3h P80 ===
+  2026-07-13 want:SHORT got:SHORT (S:210m L:90m) PASS
+  2026-07-14 want:LONG got:LONG (S:60m L:270m) PASS
+  2026-07-15 want:NONE got:NONE (S:15m L:0m) PASS
+  2026-07-16 want:SHORT got:SHORT (S:415m L:115m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:470m L:15m) PASS
+  SCORE 5/5
+  July armed days: 01S 02S 03S 04S 05S 06S 07S 08S 12S 13S 14L 16S 17S
+
+=== mem P92 / latch 24h(NQ-clock) / smoke3h P90 ===
+  2026-07-13 want:SHORT got:SHORT (S:130m L:90m) PASS
+  2026-07-14 want:LONG got:LONG (S:45m L:270m) PASS
+  2026-07-15 want:NONE got:NONE (S:0m L:0m) PASS
+  2026-07-16 want:SHORT got:SHORT (S:395m L:115m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:340m L:15m) PASS
+  SCORE 5/5
+  July armed days: 01S 02S 03S 04S 05S 06S 08S 12S 13S 14L 16S 17S
+
+=== mem P92 / latch 36h(NQ-clock) / smoke3h P80 ===
+  2026-07-13 want:SHORT got:SHORT (S:210m L:90m) PASS
+  2026-07-14 want:LONG got:LONG (S:60m L:270m) PASS
+  2026-07-15 want:NONE got:NONE (S:15m L:0m) PASS
+  2026-07-16 want:SHORT got:SHORT (S:415m L:115m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:470m L:15m) PASS
+  SCORE 5/5
+  July armed days: 01S 02S 03S 04S 05S 06S 07S 08S 12S 13S 14L 16S 17S
+
+=== mem P92 / latch 36h(NQ-clock) / smoke3h P90 ===
+  2026-07-13 want:SHORT got:SHORT (S:130m L:90m) PASS
+  2026-07-14 want:LONG got:LONG (S:45m L:270m) PASS
+  2026-07-15 want:NONE got:NONE (S:0m L:0m) PASS
+  2026-07-16 want:SHORT got:SHORT (S:395m L:115m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:340m L:15m) PASS
+  SCORE 5/5
+  July armed days: 01S 02S 03S 04S 05S 06S 08S 12S 13S 14L 16S 17S
+
+=== mem P95 / latch 24h(NQ-clock) / smoke3h P80 ===
+  2026-07-13 want:SHORT got:LONG (S:0m L:90m) FAIL
+  2026-07-14 want:LONG got:LONG (S:0m L:270m) PASS
+  2026-07-15 want:NONE got:NONE (S:0m L:0m) PASS
+  2026-07-16 want:SHORT got:SHORT (S:415m L:115m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:470m L:15m) PASS
+  SCORE 4/5
+  July armed days: 01S 02S 03S 04S 05S 06S 07S 08S 13L 14L 16S 17S
+
+=== mem P95 / latch 24h(NQ-clock) / smoke3h P90 ===
+  2026-07-13 want:SHORT got:LONG (S:0m L:90m) FAIL
+  2026-07-14 want:LONG got:LONG (S:0m L:270m) PASS
+  2026-07-15 want:NONE got:NONE (S:0m L:0m) PASS
+  2026-07-16 want:SHORT got:SHORT (S:395m L:115m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:340m L:15m) PASS
+  SCORE 4/5
+  July armed days: 01S 02S 03S 04S 05S 06S 08S 13L 14L 16S 17S
+
+=== mem P95 / latch 36h(NQ-clock) / smoke3h P80 ===
+  2026-07-13 want:SHORT got:LONG (S:0m L:90m) FAIL
+  2026-07-14 want:LONG got:LONG (S:0m L:270m) PASS
+  2026-07-15 want:NONE got:NONE (S:0m L:0m) PASS
+  2026-07-16 want:SHORT got:SHORT (S:415m L:115m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:470m L:15m) PASS
+  SCORE 4/5
+  July armed days: 01S 02S 03S 04S 05S 06S 07S 08S 13L 14L 16S 17S
+
+=== mem P95 / latch 36h(NQ-clock) / smoke3h P90 ===
+  2026-07-13 want:SHORT got:LONG (S:0m L:90m) FAIL
+  2026-07-14 want:LONG got:LONG (S:0m L:270m) PASS
+  2026-07-15 want:NONE got:NONE (S:0m L:0m) PASS
+  2026-07-16 want:SHORT got:SHORT (S:395m L:115m) PASS
+  2026-07-17 want:SHORT got:SHORT (S:340m L:15m) PASS
+  SCORE 4/5
+  July armed days: 01S 02S 03S 04S 05S 06S 08S 13L 14L 16S 17S
+
