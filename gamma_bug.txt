@@ -1,0 +1,73 @@
+[TAILING] Tailing last 30 lines for [predator-gamma] process (change the value with --lines option)
+/root/.pm2/logs/predator-gamma-out.log last 30 lines:
+7|predator | [GAMMA] 2026-08-12 20:07:33 processed 1 new snapshot(s) (3770 banked)
+7|predator | [GAMMA] 2026-08-12 20:22:34 processed 1 new snapshot(s) (3771 banked)
+7|predator | [GAMMA] 2026-08-12 20:37:33 processed 1 new snapshot(s) (3772 banked)
+7|predator | [GAMMA] 2026-08-12 20:52:33 processed 1 new snapshot(s) (3773 banked)
+7|predator | [GAMMA] 2026-08-12 21:07:34 processed 1 new snapshot(s) (3774 banked)
+7|predator | [GAMMA] 2026-08-12 21:22:34 processed 1 new snapshot(s) (3775 banked)
+7|predator | [GAMMA] 2026-08-12 21:37:34 processed 1 new snapshot(s) (3776 banked)
+7|predator | [GAMMA] 2026-08-12 21:52:33 processed 1 new snapshot(s) (3777 banked)
+7|predator | [GAMMA] 2026-08-12 22:07:34 processed 1 new snapshot(s) (3778 banked)
+7|predator | [GAMMA] 2026-08-12 22:22:35 processed 1 new snapshot(s) (3779 banked)
+7|predator | [GAMMA] 2026-08-12 22:37:34 processed 1 new snapshot(s) (3780 banked)
+7|predator | [GAMMA] 2026-08-12 22:52:34 processed 1 new snapshot(s) (3781 banked)
+7|predator | [GAMMA] 2026-08-12 23:07:35 processed 1 new snapshot(s) (3782 banked)
+7|predator | [GAMMA] 2026-08-12 23:22:34 processed 1 new snapshot(s) (3783 banked)
+7|predator | [GAMMA] 2026-08-12 23:37:34 processed 1 new snapshot(s) (3784 banked)
+7|predator | [GAMMA] 2026-08-12 23:52:35 processed 1 new snapshot(s) (3785 banked)
+7|predator | [GAMMA] 2026-08-13 00:07:35 processed 1 new snapshot(s) (3786 banked)
+7|predator | [GAMMA] 2026-08-13 00:22:36 processed 1 new snapshot(s) (3787 banked)
+7|predator | [GAMMA] 2026-08-13 00:37:36 processed 1 new snapshot(s) (3788 banked)
+7|predator | [GAMMA] 2026-08-13 00:52:35 processed 1 new snapshot(s) (3789 banked)
+7|predator | [GAMMA] 2026-08-13 01:07:36 processed 1 new snapshot(s) (3790 banked)
+7|predator | [GAMMA] 2026-08-13 01:22:35 processed 1 new snapshot(s) (3791 banked)
+7|predator | [GAMMA] 2026-08-13 01:37:36 processed 1 new snapshot(s) (3792 banked)
+7|predator | [GAMMA] 2026-08-13 01:52:36 processed 1 new snapshot(s) (3793 banked)
+7|predator | [GAMMA] 2026-08-13 02:07:38 processed 1 new snapshot(s) (3794 banked)
+7|predator | [GAMMA] 2026-08-13 02:22:37 processed 1 new snapshot(s) (3795 banked)
+7|predator | [GAMMA] 2026-08-13 02:38:00 processed 1 new snapshot(s) (3796 banked)
+7|predator | [GAMMA] 2026-08-13 02:53:18 processed 1 new snapshot(s) (3797 banked)
+7|predator | [GAMMA] 2026-08-13 03:08:45 processed 1 new snapshot(s) (3798 banked)
+7|predator | [GAMMA] 2026-08-13 03:27:32 processed 1 new snapshot(s) (3799 banked)
+
+/root/.pm2/logs/predator-gamma-error.log last 30 lines:
+7|predator |  4: 0x10fa275  [node /root/predator-hunt/gamma-computer.js]
+7|predator |  5: 0x10fa804 v8::internal::Heap::RecomputeLimits(v8::internal::GarbageCollector) [node /root/predator-hunt/gamma-computer.js]
+7|predator |  6: 0x11116f4 v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::internal::GarbageCollectionReason, char const*) [node /root/predator-hunt/gamma-computer.js]
+7|predator |  7: 0x1111f0c v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [node /root/predator-hunt/gamma-computer.js]
+7|predator |  8: 0x111406a v8::internal::Heap::HandleGCRequest() [node /root/predator-hunt/gamma-computer.js]
+7|predator |  9: 0x107f6d7 v8::internal::StackGuard::HandleInterrupts() [node /root/predator-hunt/gamma-computer.js]
+7|predator | 10: 0x152187a v8::internal::Runtime_StackGuard(int, unsigned long*, v8::internal::Isolate*) [node /root/predator-hunt/gamma-computer.js]
+7|predator | 11: 0x195bef6  [node /root/predator-hunt/gamma-computer.js]
+7|predator | 
+7|predator | <--- Last few GCs --->
+7|predator | 
+7|predator | [2873796:0x3a8daf80]    11648 ms: Mark-Compact (reduce) 479.0 (486.3) -> 478.7 (485.3) MB, 384.19 / 0.00 ms  (+ 0.5 ms in 4 steps since start of marking, biggest step 0.2 ms, walltime since start of marking 392 ms) (average mu = 0.324, current mu = 0.313)[2873796:0x3a8daf80]    11820 ms: Scavenge (reduce) 480.0 (485.3) -> 479.0 (485.3) MB, 3.18 / 0.00 ms  (average mu = 0.324, current mu = 0.313) allocation failure; 
+7|predator | 
+7|predator | 
+7|predator | <--- JS stacktrace --->
+7|predator | 
+7|predator | FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+7|predator | ----- Native stack trace -----
+7|predator | 
+7|predator |  1: 0xb78db1 node::OOMErrorHandler(char const*, v8::OOMDetails const&) [node /root/predator-hunt/gamma-computer.js]
+7|predator |  2: 0xee82f0 v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, v8::OOMDetails const&) [node /root/predator-hunt/gamma-computer.js]
+7|predator |  3: 0xee85d7 v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, v8::OOMDetails const&) [node /root/predator-hunt/gamma-computer.js]
+7|predator |  4: 0x10fa275  [node /root/predator-hunt/gamma-computer.js]
+7|predator |  5: 0x10fa804 v8::internal::Heap::RecomputeLimits(v8::internal::GarbageCollector) [node /root/predator-hunt/gamma-computer.js]
+7|predator |  6: 0x11116f4 v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::internal::GarbageCollectionReason, char const*) [node /root/predator-hunt/gamma-computer.js]
+7|predator |  7: 0x1111f0c v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [node /root/predator-hunt/gamma-computer.js]
+7|predator |  8: 0x111406a v8::internal::Heap::HandleGCRequest() [node /root/predator-hunt/gamma-computer.js]
+7|predator |  9: 0x107f6d7 v8::internal::StackGuard::HandleInterrupts() [node /root/predator-hunt/gamma-computer.js]
+7|predator | 10: 0x152187a v8::internal::Runtime_StackGuard(int, unsigned long*, v8::internal::Isolate*) [node /root/predator-hunt/gamma-computer.js]
+7|predator | 11: 0x195bef6  [node /root/predator-hunt/gamma-computer.js]
+
+---- api health ----
+{"ts":"2026-08-13T04:46:00.000Z","qld":"2026-08-13 14:46","gate":{"armed":"NONE","rank":0.8960280373831776,"level":0.008714,"saturated":false,"slopeGreenFrac":0.5384615384615384,"note":"latch memory hi, smoke 0.45 < 0.8"},"trigger":{"episode":{"dOIc":1940,"dOIu_M":15.2,"delta_M":143.33,"liqL_M":0,"liqS_M":0.11},"vote":false,"thumbRank":0.722,"floorRank":0.785,"sized":false,"blackout":false,"weeken
+---- file sizes ----
+-rw-r--r-- 1 root root 56615882 Aug 13 04:37 eth_chain_v1_2026-08.csv
+-rw-r--r-- 1 root root    93545 Aug 12 17:27 eth_gamma_v1_2026-08.csv
+               total        used        free      shared  buff/cache   available
+Mem:             961         874         108           3         107          87
+Swap:           2047         283        1764

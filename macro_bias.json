@@ -1,17 +1,26 @@
 {
-  "bias": "SIDELINES",
+  "bias": "SHORT",
   "m2_status": "EXPANDING",
-  "m2_detail": "FRED M2 (seasonally adjusted) rose from ~$22,442B in January 2026 to $22,686B in March 2026, a ~$244B expansion over 3 months, confirming an expanding liquidity tide.",
-  "calendar_event": "PPI (April 2026, released May 13)",
-  "calendar_result": "April PPI final demand surged +1.4% MoM vs. +0.5% Dow Jones consensus forecast — the largest monthly gain since March 2022 — and +6.0% YoY, signaling deeply hot upstream inflation well above expectations, a clear SHORT signal.",
+  "m2_detail": "FRED WM2NS latest reading (week ending 2026-07-06) of $23,290.1B is up from approximately $23,115.2B in early April 2026, confirming gradual expansion over the 3-month look-back.",
+  "calendar_event": "PPI Jul 2026 (released Aug 13)",
+  "calendar_result": "PPI final demand was unchanged MoM in July (BLS Aug 13) — flat producer prices are a LONG-permissive signal — while CPI Jul YoY printed 3.4% on Aug 12, ticking down from 3.5% in June, also LONG-permissive; neither result threatens the kill switches.",
   "disruption": "DISRUPTED",
-  "disruption_detail": "The US-Iran conflict continues with Strait of Hormuz traffic at a standstill and oil above $100/bbl; the 30-year Treasury yield spiked to a 19-year high of 5.2% on May 19 before easing to ~5.07% by May 22, signaling acute bond market stress; new Fed Chair Kevin Warsh was sworn in May 22 under maximum inflation pressure.",
+  "disruption_detail": "The Strait of Hormuz remains effectively closed to commercial shipping as of 22 Aug 2026 (convoys under naval escort only, traffic ~1% of normal), Trump declared it 'American territory' at an Aug 21 rally — rhetoric escalating but no new kinetic strike in the last 24h; the yen drifted back toward ¥158 after the Aug 3 US-Japan joint intervention with no fresh BOJ action overnight; 30Y UST closed at 5.28% on Aug 21, near its 19-year high, on persistent fiscal and inflation fog.",
   "kill_switches": {
     "bonds_30y_above_5_5": false,
     "cpi_above_5": false,
     "unemployment_above_5": false
   },
   "confidence": "MEDIUM",
-  "summary": "M2 expansion provides a liquidity tailwind, but it is completely overwhelmed by stagflationary headwinds: April PPI printed +1.4% MoM (nearly 3x consensus) and CPI hit 3.8% YoY (above forecast), the Fed is locked hawkish with zero rate cuts priced in for 2026, the Strait of Hormuz remains blocked with oil above $100/bbl, and the 30-year yield nearly breached 5.2% this week. Until there is a confirmed, verifiable Hormuz reopening and at least one cooler-than-expected inflation print, the risk/reward does not support a directional NQ position.",
-  "timestamp": "2026-05-25T04:33:03.078Z"
+  "summary": "The macro permission stack remains SHORT-leaning: funding has been exchange-cap-pinned for 38+ consecutive prints, marking the crowd maximally long, while CPI (3.4% YoY) and flat PPI are soft enough not to threaten rate-hike kill switches. The chronic Hormuz fog and 30Y yield at 5.28% — near its 19-year high — continue to suppress the clean, announcement-grade episode required to arm the gate and trigger a harvest, sustaining the contraction/desert regime that has dominated August.",
+  "funding_character": "PINNED",
+  "day_review": "The funding arc was a flat line at exactly 0.01000 across all 38 readings from 07:06 Qld 22 Aug through 06:51 Qld 23 Aug — zero-crossings, zero variance, the tank maximally loaded on the long side and not draining at all; this is a PIN-SHADOW environment where the 14-day P95 bar itself is being set by the current pinned regime. The machine fired nothing — correctly, because the gate rank sat at 0.829 (below the P95 instant threshold), the blackout and weekend flags were both active, and there was no qualifying trigger episode. The day was static, not legible for a harvest: PINNED funding without a qualifying announcement-grade trigger episode is fuel in the tank with no spark — the diary calls this an ARM-KISS candidate at best.",
+  "gamma_read": "The gamma cage width has expanded to 16.42% of spot from 13.29% a week ago, indicating the options market is pricing wider uncertainty rather than compressing toward a directional conviction; the zero-gamma level is absent (NaN) and the call wall at 2500 vs put wall at 2100 leaves a large asymmetric gap, consistent with the chronic geopolitical fog suppressing hedger confidence.",
+  "tomorrow": "The session opening Sat 23 Aug Qld inherits a maximally-loaded SHORT tank (funding pinned at cap, rank 0.829) but the gate cannot arm on rank alone — it needs rank to lift to P95 (approximately holding above 0.01000 with the 14d window accepting the current pin as the new norm) AND a qualifying three-sign trigger episode at announcement size during trading hours. Watch for any Hormuz/Iran escalation headline or bond-market move that generates an announcement-grade OI + CVD + liq episode; absent that catalyst, the pinned-but-rank-below-threshold condition is fuel waiting for a spark.",
+  "sit_down_today": "NO",
+  "sit_down_reason": "No Tier A/B event within the next 12h (next is GDP Thu 28 Aug 22:30 Qld); kill switches not breached (30Y 5.28% < 5.5%, CPI 3.4% < 5%, unemployment below 5%); 30Y moved ~4bp on Aug 21, well below the 15bp dislocation threshold; Hormuz situation is elevated-but-chronic, not a fresh kinetic escalation in the last 24h — per the corrected operator doctrine (2026-08-22), proximity alone is not a sit-down trigger.",
+  "next_landmine_qld": "GDP Thu 27 Aug 22:30 Qld (Tier B)",
+  "upcoming_landmine": "GDP Thu 27 Aug 08:30 ET (Tier B)",
+  "diary_suggestion": "38-print exchange-cap pin (0.01000, 22–23 Aug Qld) with gate rank at 0.829 — confirms that a sustained cap-pin does not automatically push rank to P95 within a 14-day window when prior prints were lower; tank is full but gate stays dark, adding a clean specimen of 'fuel without a gate' in a contraction/desert regime.",
+  "updated": "2026-08-22T21:07:20.621Z"
 }

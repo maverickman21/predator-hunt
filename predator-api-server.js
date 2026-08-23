@@ -157,6 +157,30 @@ app.listen(PORT, '0.0.0.0', () => {
 // ---- DIGEST v1: the ratified gate/trigger/bell stack, computed every 60s ----
 app.get('/api/digest', (req, res) => res.json(digest.get()));
 
+// ---- EXECUTIONS: PredatorHunt posts every fill; the diary reads them ----
+app.post('/api/executions', express.json(), (req, res) => {
+    try {
+        const f = path.join(__dirname, 'executions.csv');
+        if (!fs.existsSync(f))
+            fs.writeFileSync(f, 'ts_utc,qld,order,side,qty,price,position,pos_avg\n');
+        const b = req.body || {};
+        const ms = Date.parse(b.ts) || Date.now();
+        const qld = new Date(ms + 36e6).toISOString().slice(0, 16).replace('T', ' ');
+        const line = [new Date(ms).toISOString(), qld,
+            String(b.order || '').replace(/,/g, ';'), b.side || '', b.qty || 0,
+            b.price || 0, b.pos || '', b.posAvg || 0].join(',') + '\n';
+        fs.appendFileSync(f, line);
+        console.log('[EXEC] ' + qld + ' ' + b.order + ' ' + b.side + ' ' + b.qty + '@' + b.price);
+        res.json({ ok: true });
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
+app.get('/api/executions', (req, res) => {
+    const f = path.join(__dirname, 'executions.csv');
+    if (!fs.existsSync(f)) return res.status(404).send('no executions yet');
+    res.set('Content-Type', 'text/csv');
+    res.send(fs.readFileSync(f, 'utf8'));
+});
+
 // ---- DIGEST FIRES: the replay's fire list, for Strategy Analyzer backtests ----
 app.get('/api/fires', (req, res) => {
     const f = path.join(__dirname, 'digest_fires.csv');

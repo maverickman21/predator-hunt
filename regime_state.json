@@ -1,25 +1,25 @@
 {
-  "timestamp": "2026-07-22T08:57:26.776Z",
+  "timestamp": "2026-08-23T19:12:42.928Z",
   "regime": "LONG",
   "regime_since": "2026-06-25T04:45:22.645Z",
   "pair1": {
-    "h1_current": 0.07,
+    "h1_current": -0.07,
     "h1_consecutive": -3,
     "h1_direction": "deteriorating",
-    "h4_current": -0.59,
+    "h4_current": -0.26,
     "h4_gate": "open_short",
-    "h4_consecutive": 2,
-    "h4_direction": "neutral",
+    "h4_consecutive": -8,
+    "h4_direction": "deteriorating",
     "ready": true,
     "go": true
   },
   "pair2": {
-    "liq_pct": 2.520700048409767,
+    "liq_pct": 7.93275979882411,
     "liq_extreme": true,
     "liq_extreme_side": "short_exhausted",
-    "liq_vol": 0.71921646953977,
-    "liq_vol_magnitude": 0.01302735179000003,
-    "liq_pct_magnitude": 0.0652958548709579,
+    "liq_vol": 0.23741637712,
+    "liq_vol_magnitude": 0.02009454255000001,
+    "liq_pct_magnitude": 4.678310810509486,
     "ready": true,
     "go": false
   },
@@ -36,7 +36,7 @@
       "pair2_ready": false,
       "pair2_go": false,
       "corr_ok": false,
-      "macro_allowed": true
+      "macro_allowed": false
     },
     "short": {
       "pair1_ready": true,
@@ -49,18 +49,18 @@
     "mode": "holding"
   },
   "macro": {
-    "bias": "UNKNOWN",
-    "reason": "Macro bias stale (>4hrs)",
-    "confidence": "LOW"
+    "bias": "SHORT",
+    "reason": "The macro permission stack remains SHORT-leaning: funding has been exchange-cap-pinned for 38+ consecutive prints, marking the crowd maximally long, while CPI (3.4% YoY) and flat PPI are soft enough not to threaten rate-hike kill switches. The chronic Hormuz fog and 30Y yield at 5.28% — near its 19-year high — continue to suppress the clean, announcement-grade episode required to arm the gate and trigger a harvest, sustaining the contraction/desert regime that has dominated August.",
+    "confidence": "MEDIUM"
   },
   "prices": {
-    "eth": 1918.4933,
+    "eth": 2441.51444,
     "nq": 0
   },
   "context": {
-    "funding": -0.000088,
-    "ls_long": 51.83,
-    "yellows": 0
+    "funding": 0.01,
+    "ls_long": 47.6,
+    "yellows": 2
   },
   "base_scanner": {
     "black_blocks": 0

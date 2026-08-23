@@ -1,0 +1,79 @@
+BOARD SWEEP — AUGUST 2026 SIM MONTH
+generated 2026-08-20T21:49:25.579Z
+
+# | side  | entry Qld        | ticks | thumb/floor | fr@entry  | arc peak  | drained% | liq3h (L$M/S$M/n) | exit
+-----------------------------------------------------------------------------------------------------------------------------
+ 1 | Short | 2026-07-27 11:39 |  -300 | 1.000/0.802 |  0.010000 |  0.010000 |       0% | 0.7/15.6/162      | stop
+ 2 | Short | 2026-07-27 22:42 |  2001 | 1.000/0.910 |  0.005647 |  0.010000 |      44% | 2.1/0.2/119       | target
+ 3 | Short | 2026-07-28 00:39 |  -300 | 1.000/1.000 |  0.003377 |  0.010000 |      66% | 8.2/2.7/430       | stop
+ 4 | Short | 2026-07-28 08:42 |  2000 | 1.000/0.986 |  0.005931 |  0.010000 |      41% | 2.6/0.2/103       | target
+ 5 | Short | 2026-08-03 08:42 |  -300 | 1.000/0.927 |  0.010000 |  0.010000 |       0% | 0.2/2.1/97        | stop
+ 6 | Short | 2026-08-08 03:05 |  -300 | 1.000/0.979 |  0.002203 |  0.010000 |      78% | 1.8/0.2/112       | stop
+ 7 | Short | 2026-08-10 10:35 |  -300 | 0.944/0.764 |  0.004258 |  0.010000 |      57% | 1.3/2.7/129       | stop
+ 8 | Short | 2026-08-11 01:05 |   139 | 0.944/0.910 |  0.002932 |  0.010000 |      71% | 4.1/0.0/190       | close
+ 9 | Long  | 2026-08-14 23:33 |  -300 | 1.000/0.931 | -0.001603 | -0.001787 |      10% | 1.0/0.1/77        | stop
+10 | Short | 2026-08-18 12:59 |  1388 | 1.000/0.997 |  0.002110 |  0.009108 |      77% | 2.7/0.1/90        | close
+11 | Short | 2026-08-20 08:10 |  -301 | 0.944/0.872 |  0.010000 |  0.010000 |       0% | 8.2/211.6/961     | stop
+12 | Short | 2026-08-20 13:15 |  1272 | 0.944/0.691 |  0.010000 |  0.010000 |       0% | 6.4/0.6/231       | close
+
+═══ CLAUSE TESTS ═══
+
+── BASELINE (all trades)
+   trades kept: 12/12  |  net: 4699t (vs 4699t actual, delta +0)  |  W/L: 5/7  (42%)
+   dropped: #
+   no winners killed
+
+── A. Burn-phase veto: drop entries >60% drained
+   trades kept: 8/12  |  net: 3772t (vs 4699t actual, delta -927)  |  W/L: 3/5  (38%)
+   dropped: #3, #6, #8, #10
+   *** WINNERS KILLED: #8 (+139), #10 (+1388)
+
+── B. Burn-phase veto: drop entries >50% drained
+   trades kept: 7/12  |  net: 4072t (vs 4699t actual, delta -627)  |  W/L: 3/4  (43%)
+   dropped: #3, #6, #7, #8, #10
+   *** WINNERS KILLED: #8 (+139), #10 (+1388)
+
+── C. Burn-phase veto: drop entries >40% drained
+   trades kept: 5/12  |  net: 71t (vs 4699t actual, delta -4628)  |  W/L: 1/4  (20%)
+   dropped: #2, #3, #4, #6, #7, #8, #10
+   *** WINNERS KILLED: #2 (+2001), #4 (+2000), #8 (+139), #10 (+1388)
+
+── D. Max-rank only: thumb >= 0.99
+   trades kept: 8/12  |  net: 3889t (vs 4699t actual, delta -810)  |  W/L: 3/5  (38%)
+   dropped: #7, #8, #11, #12
+   *** WINNERS KILLED: #8 (+139), #12 (+1272)
+
+── E. Floor >= 0.90
+   trades kept: 8/12  |  net: 4328t (vs 4699t actual, delta -371)  |  W/L: 4/4  (50%)
+   dropped: #1, #7, #11, #12
+   *** WINNERS KILLED: #12 (+1272)
+
+── F. Texture: smoke >= $1M on the crowd side (3h)
+   trades kept: 9/12  |  net: 5599t (vs 4699t actual, delta +900)  |  W/L: 5/4  (56%)
+   dropped: #1, #5, #9
+   no winners killed
+
+── G. Texture: smoke >= $5M on the crowd side (3h)
+   trades kept: 3/12  |  net: 671t (vs 4699t actual, delta -4028)  |  W/L: 1/2  (33%)
+   dropped: #1, #2, #4, #5, #6, #7, #8, #9, #10
+   *** WINNERS KILLED: #2 (+2001), #4 (+2000), #8 (+139), #10 (+1388)
+
+── H. Clock: no entries 00:00-04:00 Qld
+   trades kept: 9/12  |  net: 5160t (vs 4699t actual, delta +461)  |  W/L: 4/5  (44%)
+   dropped: #3, #6, #8
+   *** WINNERS KILLED: #8 (+139)
+
+── I. D + A (max-rank AND <=60% drained)
+   trades kept: 5/12  |  net: 3101t (vs 4699t actual, delta -1598)  |  W/L: 2/3  (40%)
+   dropped: #3, #6, #7, #8, #10, #11, #12
+   *** WINNERS KILLED: #8 (+139), #10 (+1388), #12 (+1272)
+
+── J. D + F (max-rank AND smoke >= $1M)
+   trades kept: 5/12  |  net: 4789t (vs 4699t actual, delta +90)  |  W/L: 3/2  (60%)
+   dropped: #1, #5, #7, #8, #9, #11, #12
+   *** WINNERS KILLED: #8 (+139), #12 (+1272)
+
+── K. D + H (max-rank AND no graveyard hours)
+   trades kept: 6/12  |  net: 4489t (vs 4699t actual, delta -210)  |  W/L: 3/3  (50%)
+   dropped: #3, #6, #7, #8, #11, #12
+   *** WINNERS KILLED: #8 (+139), #12 (+1272)

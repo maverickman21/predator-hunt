@@ -1,0 +1,47 @@
+┌────┬─────────────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name                │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼─────────────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 2  │ predator-api        │ default     │ 1.0.0   │ fork    │ 2739250  │ 3D     │ 44   │ online    │ 0%       │ 0b       │ root     │ disabled │
+│ 6  │ predator-chain      │ default     │ 1.0.0   │ fork    │ 2739260  │ 3D     │ 1    │ online    │ 0%       │ 17.6mb   │ root     │ disabled │
+│ 0  │ predator-eth-v2     │ default     │ 1.0.0   │ fork    │ 2739244  │ 3D     │ 71   │ online    │ 0%       │ 61.7mb   │ root     │ disabled │
+│ 7  │ predator-gamma      │ default     │ 1.0.0   │ fork    │ 2739268  │ 3D     │ 236  │ online    │ 0%       │ 71.2mb   │ root     │ disabled │
+│ 10 │ predator-morning    │ default     │ 1.0.0   │ fork    │ 2739282  │ 3D     │ 2    │ online    │ 0%       │ 39.5mb   │ root     │ disabled │
+│ 8  │ predator-walls      │ default     │ 1.0.0   │ fork    │ 2739275  │ 3D     │ 7    │ online    │ 0%       │ 20.7mb   │ root     │ disabled │
+└────┴─────────────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+---- morning bot logs ----
+[TAILING] Tailing last 30 lines for [predator-morning] process (change the value with --lines option)
+/root/.pm2/logs/predator-morning-error.log last 30 lines:
+10|predato | [MORNING] unparseable response, no brief today
+
+/root/.pm2/logs/predator-morning-out.log last 30 lines:
+10|predato | [dotenv@17.3.1] injecting env (13) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+10|predato | ╔════════════════════════════════════════════════════════════╗
+10|predato | ║  PREDATOR MORNING BOT v2 - one brief, 07:05 Qld daily      ║
+10|predato | ║  Macro + tank review + fires + gamma cage, one API ping    ║
+10|predato | ╚════════════════════════════════════════════════════════════╝
+10|predato |   API Key:  loaded
+10|predato |   Telegram: loaded
+10|predato |   Calendar: 56 events
+10|predato | [MORNING] interactive Q&A live - text the bot any question
+10|predato | [MORNING] next brief in 20.7h (07:05 Qld)
+10|predato | 
+10|predato | [MORNING] ═══ Brief run 09/08/2026, 7:05:00 am ═══
+10|predato | [MORNING] gathering local data...
+10|predato | [MORNING] calling Claude...
+10|predato | [MORNING] ═══ Brief sent. Tank: LOADING, bias: LONG ═══
+10|predato | 
+10|predato | [MORNING] ═══ Brief run 10/08/2026, 7:06:18 am ═══
+10|predato | [MORNING] gathering local data...
+10|predato | [MORNING] calling Claude...
+10|predato | [MORNING] ═══ Brief sent. Tank: LOADING, bias: LONG ═══
+10|predato | 
+10|predato | [MORNING] ═══ Brief run 11/08/2026, 7:07:20 am ═══
+10|predato | [MORNING] gathering local data...
+10|predato | [MORNING] calling Claude...
+10|predato | [MORNING] ═══ Brief sent. Tank: MIXED, bias: LONG ═══
+10|predato | 
+10|predato | [MORNING] ═══ Brief run 12/08/2026, 7:08:47 am ═══
+10|predato | [MORNING] gathering local data...
+10|predato | [MORNING] calling Claude...
+10|predato | [MORNING] ═══ Brief sent. Tank: LOADING, bias: LONG ═══
+

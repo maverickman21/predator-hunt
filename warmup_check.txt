@@ -1,0 +1,14 @@
+=== JUNE ALONE ===
+[replay] loading full history for range...
+[replay] scanning 2026-06-01 -> 2026-06-30
+[replay] done
+
+=== JULY 6-21 ALONE (should reproduce the old 19 fires) ===
+[replay] loading full history for range...
+[replay] scanning 2026-07-06 -> 2026-07-21
+[replay] done
+
+=== JUNE PILLAR FILE: header + funding range + coin-OI presence ===
+qld_time,timestamp,eth_price,nq_price,yellow_count,funding_open,funding_high,funding_low,funding_close,oi_open,oi_high,oi_low,oi_close,cvd_agg_buy,cvd_agg_sell,cvd_delta
+2557 eth_pillars_v3_2026-06.csv
+funding min/max: -0.003867 0.00992

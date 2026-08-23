@@ -41,6 +41,7 @@ let funding = [], rows = new Map(), liqLong = new Map(), liqShort = new Map();
 let gridRank = [];
 let lastPillarMs = 0, lastLiqMs = 0;
 let current = { status: 'starting' };
+let lastLiveFireMs = 0;   // live fire ledger edge-guard (30-min refractory)
 
 function isWeekend(ms) {
   const d = new Date(ms), dow = d.getUTCDay(), h = d.getUTCHours();
@@ -121,8 +122,13 @@ function liqHeader(file) {
   return { log_time: first.indexOf('log_time'), usd_value: first.indexOf('usd_value'), side: first.indexOf('side') };
 }
 
-function loadLiqs(fullDays) {
-  const cutoff = Date.now() - fullDays * 864e5;
+function loadLiqs(fullDays, cutoffMs) {
+  // cutoffMs lets replay anchor the window to the REPLAY RANGE instead of the
+  // wall clock. Without it, a replay of dates older than `fullDays` silently
+  // loads zero liquidations -> smoke test always fails -> every latch fire
+  // vanishes. (Diagnosed at board #1, 2026-08-21.)
+  const cutoff = (cutoffMs !== undefined && cutoffMs !== null)
+    ? cutoffMs : Date.now() - fullDays * 864e5;
   for (const f of liqFiles()) {
     const hdr = liqHeader(f);
     const lines = fs.readFileSync(path.join(DIR, f), 'utf8').split(/\r?\n/);
@@ -387,6 +393,20 @@ function start() {
       refreshTails();
       appendGridRank(Date.now());
       current = computeAt(Date.now());
+      // LIVE FIRE LEDGER: every fire appends to digest_fires.csv permanently
+      if (current && current.trigger && current.trigger.fire &&
+          Date.now() - lastLiveFireMs > 30 * 60000) {
+        lastLiveFireMs = Date.now();
+        const f = path.join(DIR, 'digest_fires.csv');
+        const t = current.trigger.episode;
+        const line = current.ts + ',' + current.qld + ',' + current.gate.armed + ',' +
+          (current.gate.via || 'live') + ',' + t.dOIc + ',' + t.delta_M + ',' +
+          current.trigger.thumbRank + ',' + current.trigger.floorRank + '\n';
+        if (!fs.existsSync(f))
+          fs.writeFileSync(f, 'ts_utc,qld,side,via,dOIc,delta_M,thumbRank,floorRank\n');
+        fs.appendFileSync(f, line);
+        console.log('[digest] LIVE FIRE appended: ' + current.qld + ' ' + current.gate.armed);
+      }
     } catch (e) { current = { status: 'error', error: e.message, ts: new Date().toISOString() }; }
   };
   tick();
@@ -403,7 +423,8 @@ if (require.main === module && process.argv[2] === '--replay') {
   const to = Date.parse(process.argv[4] + 'T23:59:00+10:00');
   console.log('[replay] loading full history for range...');
   const days = Math.ceil((Date.now() - from) / 864e5) + GATE_LOOKBACK_D + 2;
-  loadPillars(days); loadLiqs(Math.min(days, 30));
+  // liqs must cover the replay range itself plus the 7-day smoke lookback
+  loadPillars(days); loadLiqs(0, from - 10 * 864e5);
   for (let m = from - 3 * 864e5; m < from; m += 5 * 60000) appendGridRank(m);
   console.log('[replay] scanning ' + process.argv[3] + ' -> ' + process.argv[4]);
   const outIdx = process.argv.indexOf('--out');

@@ -7,3 +7,9 @@ sheets-key.json
 *.bak.*
 *.bak2
 eth_signals_v2_2026-06.csv
+eth_chain_v1_2026-07.csv
+eth_chain_v1_2026-08.csv
+eth_signals_v2_2026-07.csv
+eth_signals_v2_2026-08.csv
+large_walls_v5_2026-07.csv
+large_walls_v5_2026-08.csv

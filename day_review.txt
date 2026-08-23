@@ -1,0 +1,154 @@
+=== EXECUTIONS (the machine's own account) ===
+ts_utc,qld,order,side,qty,price,position,pos_avg
+2026-07-27T09:00:00.000Z,2026-07-27 19:00,pipe-test,Flat,0,0,,0
+2026-07-27T01:39:04.949Z,2026-07-27 11:39,Predatorinstant,Short,1,28607.25,Short,28607.25
+2026-07-27T05:20:43.774Z,2026-07-27 15:20,Stop loss,Long,1,28682.25,Flat,0
+2026-07-27T12:42:04.927Z,2026-07-27 22:42,Predatorlatch,Short,1,28665,Short,28665
+2026-07-27T14:25:20.446Z,2026-07-28 00:25,Profit target,Long,1,28164.75,Flat,0
+2026-07-27T14:39:05.476Z,2026-07-28 00:39,Predatorlatch,Short,1,28039.25,Short,28039.25
+2026-07-27T14:51:05.886Z,2026-07-28 00:51,Stop loss,Long,1,28114.25,Flat,0
+
+=== REPLAY Mon-Tue ===
+[replay] loading full history for range...
+[replay] scanning 2026-07-27 -> 2026-07-28
+2026-07-27 11:40  SHORT (instant)  dOIc:-2674 delta:-113.48M  thumb:1 floor:0.813
+2026-07-28 00:40  SHORT (latch)  dOIc:-16666 delta:-264.79M  thumb:1 floor:1
+[replay] done
+
+=== FUNDING ARC Mon 12:00 -> Tue 05:00 ===
+2026-07-27 12:00:02 fund:0.01
+2026-07-27 12:11:15 fund:0.01
+2026-07-27 12:22:40 fund:0.01
+2026-07-27 12:34:16 fund:0.01
+2026-07-27 12:45:41 fund:0.01
+2026-07-27 12:57:14 fund:0.01
+2026-07-27 13:08:30 fund:0.01
+2026-07-27 13:19:51 fund:0.01
+2026-07-27 13:31:02 fund:0.01
+2026-07-27 13:42:18 fund:0.01
+2026-07-27 13:53:31 fund:0.01
+2026-07-27 14:05:08 fund:0.01
+2026-07-27 14:16:15 fund:0.01
+2026-07-27 14:28:27 fund:0.01
+2026-07-27 14:39:43 fund:0.01
+2026-07-27 14:50:53 fund:0.01
+2026-07-27 15:01:54 fund:0.01
+2026-07-27 15:13:15 fund:0.01
+2026-07-27 15:24:26 fund:0.01
+2026-07-27 15:36:06 fund:0.01
+2026-07-27 15:47:20 fund:0.01
+2026-07-27 15:58:42 fund:0.01
+2026-07-27 16:11:52 fund:0.01
+2026-07-27 16:23:30 fund:0.01
+2026-07-27 16:34:53 fund:0.01
+2026-07-27 16:46:31 fund:0.01
+2026-07-27 16:57:51 fund:0.01
+2026-07-27 17:09:07 fund:0.01
+2026-07-27 17:20:19 fund:0.009641
+2026-07-27 17:31:29 fund:0.008918
+2026-07-27 17:43:07 fund:0.008298
+2026-07-27 17:55:11 fund:0.008476
+2026-07-27 18:06:27 fund:0.008
+2026-07-27 18:17:39 fund:0.007729
+2026-07-27 18:28:50 fund:0.007753
+2026-07-27 18:40:06 fund:0.007806
+2026-07-27 18:51:27 fund:0.007593
+2026-07-27 19:02:38 fund:0.007463
+2026-07-27 19:14:26 fund:0.007328
+2026-07-27 19:25:31 fund:0.00718
+2026-07-27 19:36:31 fund:0.007465
+2026-07-27 19:48:02 fund:0.008228
+2026-07-27 19:59:03 fund:0.007931
+2026-07-27 20:10:19 fund:0.007616
+2026-07-27 20:21:44 fund:0.00752
+2026-07-27 20:33:06 fund:0.007883
+2026-07-27 20:44:26 fund:0.007933
+2026-07-27 20:55:41 fund:0.007594
+2026-07-27 21:06:54 fund:0.007215
+2026-07-27 21:18:06 fund:0.00743
+2026-07-27 21:29:39 fund:0.007235
+2026-07-27 21:40:59 fund:0.006976
+2026-07-27 21:52:14 fund:0.00692
+2026-07-27 22:03:40 fund:0.006777
+2026-07-27 22:14:42 fund:0.006395
+2026-07-27 22:28:41 fund:0.005798
+2026-07-27 22:40:02 fund:0.005656
+2026-07-27 22:51:50 fund:0.005542
+2026-07-27 23:03:06 fund:0.005065
+2026-07-27 23:14:30 fund:0.004895
+2026-07-27 23:26:07 fund:0.004415
+2026-07-27 23:46:17 fund:0.004592
+2026-07-27 23:59:02 fund:0.004342
+2026-07-28 00:10:27 fund:0.00407
+2026-07-28 00:26:56 fund:0.003746
+2026-07-28 00:43:19 fund:0.003138
+2026-07-28 00:55:17 fund:0.002844
+2026-07-28 01:06:44 fund:0.002718
+2026-07-28 01:19:08 fund:0.00222
+2026-07-28 01:30:43 fund:0.001939
+2026-07-28 01:42:04 fund:0.001861
+2026-07-28 01:53:04 fund:0.001744
+2026-07-28 02:04:06 fund:0.001496
+2026-07-28 02:15:54 fund:0.001357
+2026-07-28 02:30:31 fund:0.001369
+2026-07-28 02:42:31 fund:0.001271
+2026-07-28 02:53:42 fund:0.001291
+2026-07-28 03:05:05 fund:0.001162
+2026-07-28 03:16:26 fund:0.001452
+2026-07-28 03:29:17 fund:0.001511
+2026-07-28 03:40:38 fund:0.001555
+2026-07-28 03:52:04 fund:0.001333
+2026-07-28 04:03:07 fund:0.001326
+2026-07-28 04:14:14 fund:0.001341
+2026-07-28 04:25:40 fund:0.001296
+2026-07-28 04:37:06 fund:0.001531
+2026-07-28 04:48:17 fund:0.00152
+2026-07-28 04:59:39 fund:0.002082
+
+=== MORNING BOT LOGS (the missed brief) ===
+[TAILING] Tailing last 40 lines for [predator-morning] process (change the value with --lines option)
+/root/.pm2/logs/predator-morning-error.log last 40 lines:
+10|predato | [MORNING] unparseable response, no brief today
+
+/root/.pm2/logs/predator-morning-out.log last 40 lines:
+10|predato | [dotenv@17.3.1] injecting env (13) from .env -- tip: ⚙️  override existing env vars with { override: true }
+10|predato | ╔════════════════════════════════════════════════════════════╗
+10|predato | ║  PREDATOR MORNING BOT v2 - one brief, 07:05 Qld daily      ║
+10|predato | ║  Macro + tank review + fires + gamma cage, one API ping    ║
+10|predato | ╚════════════════════════════════════════════════════════════╝
+10|predato |   API Key:  loaded
+10|predato |   Telegram: loaded
+10|predato |   Calendar: 56 events
+10|predato | [MORNING] interactive Q&A live - text the bot any question
+10|predato | [MORNING] next brief in 23.1h (07:05 Qld)
+10|predato | [MORNING] Q: what happened with the trade on Friday morning and how does it fit the fuel question?
+10|predato | [dotenv@17.3.1] injecting env (13) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+10|predato | ╔════════════════════════════════════════════════════════════╗
+10|predato | ║  PREDATOR MORNING BOT v2 - one brief, 07:05 Qld daily      ║
+10|predato | ║  Macro + tank review + fires + gamma cage, one API ping    ║
+10|predato | ╚════════════════════════════════════════════════════════════╝
+10|predato |   API Key:  loaded
+10|predato |   Telegram: loaded
+10|predato |   Calendar: 56 events
+10|predato | [MORNING] interactive Q&A live - text the bot any question
+10|predato | [MORNING] next brief in 22.6h (07:05 Qld)
+10|predato | [MORNING] Q: how does the tank look right now ?
+10|predato | [MORNING] Q: Can you see my trade I’m currently in?
+10|predato | [MORNING] Q: Yes we are down 150 ticks at the moment but price has more or less gone sideways since the entry at 11:39am. Funding pinned max all day. Seems the market is waiting
+10|predato | [MORNING] Q: Looks like the funds rate is dropping hard
+10|predato | [MORNING] Q: I just think the Fomc announcement week is showing conditions that over time will probably tell us that these conditions aren’t the perfect seed planter type trades I’ve been testing on for months now. But time will tell
+10|predato | [MORNING] Q: Yes the inverted 4 pillar data is unusual haven’t seen that consistently before screams uncertainty
+10|predato | [MORNING] Q: We wait we watch the prey
+10|predato | [MORNING] Q: I’m not in front of my charts right now but just before I left the office the funding plummeted to .008 and selling hard. With what looked like no cascade fuel more longs running out of fuel to burn. Either way this quick funding transition again is not what I’ve been seeing for months. Supporting low Duke Score conditions
+10|predato | [MORNING] Q: Nice one and by Tuesday you mean Wednesday Qld time ? I’m in +10GMT so you know
+10|predato | [MORNING] Q: You mean Warsh’s presser ?
+10|predato | [MORNING] Q: Kevin Wash is the current fed chair not Jerome Powell
+10|predato | Anymore this changed in May
+10|predato | [MORNING] Q: gate closed now the whole set up was a false alarm
+10|predato | [MORNING] Q: it was a figure of speak but yer ok
+10|predato | 
+10|predato | [MORNING] ═══ Brief run 28/07/2026, 7:05:00 am ═══
+10|predato | [MORNING] gathering local data...
+10|predato | [MORNING] calling Claude (one daily ping)...
+10|predato | [MORNING] Q: how come you didn't send my daily report at 7:05am today?
+

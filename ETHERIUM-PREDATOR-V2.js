@@ -987,6 +987,7 @@ async function pillarSnapshot(wethPrice, nqP) {
 
 // ─── Telegram ────────────────────────────────────────────────────────────────
 function sendTelegram(msg) {
+    return Promise.resolve();  // SILENCED 2026-07-24 - morning bot owns Telegram now
     if (!TELEGRAM_TOKEN || !CHAT_ID) return Promise.resolve();
     const body = JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: 'Markdown' });
     return new Promise((resolve) => {

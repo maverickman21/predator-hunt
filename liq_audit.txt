@@ -1,0 +1,12 @@
+=== LIQ FILE COVERAGE ===
+-rw-r--r-- 1 root root  948985 Jun 30 23:59 eth_liquidations_v2_2026-06.csv
+-rw-r--r-- 1 root root 2162374 Jul 31 23:57 eth_liquidations_v2_2026-07.csv
+-rw-r--r-- 1 root root 1031660 Aug 20 22:20 eth_liquidations_v2_2026-08.csv
+--- earliest and latest rows in July liq file ---
+log_time,exchange,symbol,price,usd_value,side,event_time
+2026-07-01T00:00:54.053Z,BINANCE,ETHUSDT,1572.75,712.45575,1,1782864044335
+2026-07-31T23:57:20.172Z,BINANCE,ETHUSDC,1860,5890.62,1,1785542213248
+--- liq events on Jul 13 ---
+1154
+--- liq events on Jul 25 ---
+292

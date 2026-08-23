@@ -1,0 +1,20 @@
+=== EXECUTIONS tail ===
+2026-07-27T01:39:04.949Z,2026-07-27 11:39,Predatorinstant,Short,1,28607.25,Short,28607.25
+2026-07-27T05:20:43.774Z,2026-07-27 15:20,Stop loss,Long,1,28682.25,Flat,0
+2026-07-27T12:42:04.927Z,2026-07-27 22:42,Predatorlatch,Short,1,28665,Short,28665
+2026-07-27T14:25:20.446Z,2026-07-28 00:25,Profit target,Long,1,28164.75,Flat,0
+2026-07-27T14:39:05.476Z,2026-07-28 00:39,Predatorlatch,Short,1,28039.25,Short,28039.25
+2026-07-27T14:51:05.886Z,2026-07-28 00:51,Stop loss,Long,1,28114.25,Flat,0
+2026-07-27T22:42:05.240Z,2026-07-28 08:42,Predatorlatch,Short,1,28135.5,Short,28135.5
+2026-07-28T14:14:06.092Z,2026-07-29 00:14,Profit target,Long,1,27635.5,Flat,0
+2026-08-02T22:42:04.959Z,2026-08-03 08:42,Predatorinstant,Short,1,28608,Short,28608
+2026-08-03T03:50:31.942Z,2026-08-03 13:50,Stop loss,Long,1,28683,Flat,0
+2026-08-07T17:05:04.008Z,2026-08-08 03:05,Predatorlatch,Short,1,29744,Short,29744
+2026-08-07T19:15:56.994Z,2026-08-08 05:15,Stop loss,Long,1,29819,Flat,0
+
+=== REPLAY Fri-Sat ===
+[replay] loading full history for range...
+[replay] scanning 2026-08-07 -> 2026-08-08
+2026-08-08 00:10  SHORT (latch)  dOIc:-17867 delta:-338.07M  thumb:1 floor:1
+2026-08-08 03:05  SHORT (latch)  dOIc:-7549 delta:-347.53M  thumb:1 floor:0.976
+[replay] done
