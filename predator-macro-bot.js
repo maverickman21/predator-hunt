@@ -196,6 +196,8 @@ function buildPrompt(local) {
 
 ═══ THE TRADING DIARY (accumulated judgment — this outranks your own inferences) ═══
 ${getLedger()}
+SIT-DOWN CALIBRATION WARNING: on 2026-08-24 you incorrectly called a sit-down citing 30y "proximity" (5.23-5.28% vs a 5.5% switch) and a Tier B event 36 hours out. Both were wrong. Proximity is never a trigger; the window is 12 hours. A brief that says SIT DOWN every day is worthless. Where the diary and these instructions conflict, THE DIARY WINS.
+
 THE SIT-DOWN DOCTRINE IS THE SYSTEM'S HIGHEST-VALUE DISCIPLINE: board sweep 2026-08-21 measured the operator's manual Tier-A/B sit-downs as worth +877 ticks over the Jul-Aug era (the backtest, which traded through NFP/CPI/PPI, lost -877 on exactly those five trades). Your sit_down_today field is therefore the most consequential line in this brief — err toward YES when a Tier A/B event is in range, and state times in Qld.
 
 Use the diary: grade fires against its specimens and open questions (e.g. fuel-remaining at entry), apply its regime taxonomy and corrections, never re-report an already-graded fire as new, and never invent rules it does not contain.
@@ -257,7 +259,7 @@ Respond with EXACTLY this JSON, nothing else, no markdown fences:
     "day_review": "3-4 sentences: what the tank did (with Qld times), what the machine fired or correctly refused and why per the rubric, and whether the day was legible or static",
     "gamma_read": "1-2 sentences: cage width vs last week (compressed = conviction absent), regime side, anything notable",
     "tomorrow": "2 sentences: the loading-day bias for the session ahead and what would make the gate arm (e.g. 'funding needs to hold above X to rank 95th')",
-    "sit_down_today": "YES or NO — the single most important field. Answer YES if ANY of these hold for the Qld session that begins today: (a) a Tier A event (FOMC, CPI) prints during this session or within the following 12 hours; (b) a Tier B event (PPI, GDP) prints in that window; (c) a kill-switch input is within 5% of its threshold (30y UST >5.2%, CPI YoY >4.75%, unemployment >4.75%); (d) a standing watch item escalated materially in the last 24h (fresh Hormuz/Iran kinetic escalation, yen intervention or BoJ surprise, bond-market dislocation). Answer NO otherwise. Do not hedge — the operator needs a binary.",
+    "sit_down_today": "YES or NO — the single most important field. Answer YES ONLY if at least one of these is TRUE for the Qld session beginning today. Be strict: a permanent YES destroys the field's value, and elevated-but-stable macro is CONTEXT, never a blocker.\n  (a) TIER A event (FOMC decision, CPI release) prints within the next 12 HOURS (not 24, not 36).\n  (b) TIER B event (PPI, GDP, NFP) prints within the next 12 HOURS.\n  (c) A kill switch is BREACHED — 30y UST ABOVE 5.5%, headline CPI YoY ABOVE 5%, or unemployment ABOVE 5%. PROXIMITY IS NOT A TRIGGER. The 30y has traded 5.18-5.33% for weeks; that is context and must NOT produce a sit-down. Alternatively, a kill-switch input DISLOCATED — moved more than 15 basis points in the last 24 hours.\n  (d) A standing watch item ESCALATED IN THE LAST 24 HOURS with a fresh, specific event: new kinetic strike, actual FX intervention, BoJ surprise, or a bond-market dislocation. Chronic ongoing situations (Hormuz closure, war fog, elevated yields) are NOT escalations no matter how serious.\nIf none of (a)-(d) is true, answer NO. Do not hedge.",
     "sit_down_reason": "one sentence naming the SPECIFIC trigger if YES (event + exact Qld date/time), or the clearance if NO (e.g. 'no Tier A/B until GDP Aug 27; kill switches clear; no fresh escalation')",
     "next_landmine_qld": "the next Tier A/B event with its date AND time converted to Qld (UTC+10), e.g. 'GDP Thu 27 Aug 22:30 Qld (Tier A)'",
     "upcoming_landmine": "next Tier A/B macro event and date, or 'none scheduled'",
@@ -335,13 +337,47 @@ function tgSendRaw(payload) {
 
 async function sendTelegram(msg) {
     if (!TELEGRAM_TOKEN || !CHAT_ID) return;
-    // try Markdown first; if Telegram rejects (e.g. unbalanced _ or * in echoed text),
-    // resend as plain text so confirmations can never silently vanish
-    const r = await tgSendRaw({ chat_id: CHAT_ID, text: msg, parse_mode: 'Markdown' });
-    if (!r || !r.ok) {
-        const r2 = await tgSendRaw({ chat_id: CHAT_ID, text: msg });
-        if (!r2 || !r2.ok) console.error('[MORNING] telegram send failed twice: ' + JSON.stringify(r2 || r));
+    // Telegram hard-limits messages at 4096 chars. Split on paragraph breaks so a
+    // growing brief can never silently fail to send. (Diagnosed 2026-08-27.)
+    const LIMIT = 3800;
+    if (msg.length > LIMIT) {
+        const parts = [];
+        let buf = '';
+        for (const para of msg.split('\n')) {
+            if ((buf + '\n' + para).length > LIMIT) { parts.push(buf); buf = para; }
+            else buf = buf ? buf + '\n' + para : para;
+        }
+        if (buf) parts.push(buf);
+        for (let i = 0; i < parts.length; i++) {
+            await sendOne(parts.length > 1 ? parts[i] + (i < parts.length - 1 ? '\n…' : '') : parts[i]);
+        }
+        return;
     }
+    return sendOne(msg);
+}
+
+async function sendOne(msg) {
+    // Markdown first; on a content rejection (ok:false with an error_code) fall back to
+    // plain text. On a NETWORK failure (null response - Telegram unreachable) retry with
+    // backoff: 20s, 60s, 180s. A transient outage at 07:05 lost the 13 Sep brief under the
+    // old two-immediate-attempts logic. (Patched 2026-09-13.)
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    const delays = [0, 20e3, 60e3, 180e3];
+    for (let i = 0; i < delays.length; i++) {
+        if (delays[i]) await sleep(delays[i]);
+        let r = await tgSendRaw({ chat_id: CHAT_ID, text: msg, parse_mode: 'Markdown' });
+        if (r && r.ok) return;
+        if (r && r.ok === false) {           // content rejection -> plaintext, same attempt
+            r = await tgSendRaw({ chat_id: CHAT_ID, text: msg });
+            if (r && r.ok) return;
+            if (r && r.ok === false) {       // rejected in both forms: no point retrying
+                console.error('[MORNING] telegram rejected message: ' + JSON.stringify(r));
+                return;
+            }
+        }
+        console.error(`[MORNING] telegram unreachable (attempt ${i + 1}/${delays.length})`);
+    }
+    console.error('[MORNING] telegram send abandoned after backoff');
 }
 
 // ─── the daily run ───────────────────────────────────────────────────────────
@@ -532,9 +568,15 @@ function msUntilNextRun() {
     console.log('[MORNING] interactive Q&A live - text the bot any question');
     const wait = msUntilNextRun();
     console.log(`[MORNING] next brief in ${(wait / 3600e3).toFixed(1)}h (07:05 Qld)`);
+    // Re-anchor to the ABSOLUTE next 07:05 Qld after every run. The previous
+    // '+24h from completion' drifted by the run's own duration each day
+    // (07:05 -> 07:29 over a fortnight; diagnosed 2026-09-10).
     setTimeout(async function tick() {
-        await morningRun();
-        setTimeout(tick, 24 * 3600e3);
+        try { await morningRun(); }
+        catch (e) { console.error('[MORNING] run error: ' + e.message); }
+        const next = msUntilNextRun();
+        console.log(`[MORNING] next brief in ${(next / 3600e3).toFixed(2)}h (07:05 Qld)`);
+        setTimeout(tick, next);
     }, wait);
 })().catch(e => { console.error('[MORNING] fatal: ' + e.message); });
 

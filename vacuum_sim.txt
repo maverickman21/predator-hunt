@@ -1,0 +1,67 @@
+PREDATOR VACUUM v0 — FADE SIM (MNQ 1-min, next-bar-open fills, stop checked before target)
+generated 2026-09-18T03:27:39.161Z
+
+PRE-REGISTERED: the vacuum book DIES if low-smoke fades (<P50) lack positive expectancy at 600/300,
+                OR if the high-smoke control (>=P75, fading a real burn) does not lose.
+doctrine applied to fades: no entries 00:00-08:00 Qld (cutoff 0); session-flat 06:59.
+
+   fire qld          push   fade  smokePct  fr@fire   | 300/300   450/300   600/300   trail(+300,300)  mfe(t)
+------------------------------------------------------------------------------------------------------------------------
+2026-07-06 22:10  SHORT  LONG     100%    0.00356  |  -300s     -300s     -300s     -300s               44
+2026-07-13 08:50  SHORT  LONG      75%    0.00124  |   300t      450t      600t      357s              657
+2026-07-13 10:40  SHORT  LONG      86%    0.00312  |  -300s     -300s     -300s     -300s               47
+2026-07-13 15:35  SHORT  LONG      93%    0.00043  |   300t      450t      600t      414s              611
+2026-07-14 08:15  LONG   SHORT     53%   -0.00174  |   300t      450t     -300s      200s              510
+2026-07-14 09:30  LONG   SHORT     82%   -0.00073  |  -300s     -300s     -300s     -300s              161
+2026-07-15 17:30  SHORT  LONG      99%    0.00490  |  -300s     -300s     -300s     -300s              150
+2026-07-16 17:45  SHORT  LONG      99%    0.00531  |  -300s     -300s     -300s     -300s               57
+2026-07-17 09:25  SHORT  LONG      97%    0.00824  |  -300s     -300s     -300s     -300s              150
+2026-07-17 15:35  SHORT  LONG      97%    0.00360  |  -300s     -300s     -300s     -300s              207
+2026-07-17 23:15  SHORT  LONG     100%    0.00074  |  -300s     -300s     -300s     -300s              255
+2026-07-20 16:35  SHORT  LONG      98%    0.00186  |   300t      450t      600t      345s              612
+2026-07-27 11:40  SHORT  LONG      96%    0.01000  |   300t      450t      600t      328s              624
+2026-07-28 08:45  SHORT  LONG      98%    0.00579  |  -300s     -300s     -300s     -300s              242
+2026-07-28 13:05  LONG   SHORT     54%   -0.00449  |  -300s     -300s     -300s     -300s              127
+2026-08-03 08:40  SHORT  LONG      84%    0.01000  |  -300s     -300s     -300s     -300s               99
+2026-08-13 08:05  SHORT  LONG      94%    0.00642  |   300t      450t      600t      160s              683
+2026-08-13 16:10  SHORT  LONG      70%    0.01000  |   300t      450t      600t     1221s              602
+2026-08-14 23:35  LONG   SHORT     65%   -0.00173  |   300t      450t      600t      424s              646
+2026-08-18 13:00  SHORT  LONG      99%    0.00205  |  -300s     -300s     -300s     -300s               74
+2026-08-18 15:40  SHORT  LONG      84%    0.00170  |  -300s     -300s     -300s     -300s               56
+2026-08-20 08:10  SHORT  LONG      99%    0.01000  |   300t     -300s     -300s       18s              318
+2026-08-20 13:15  SHORT  LONG     100%    0.01000  |  -300s     -300s     -300s     -300s              247
+2026-08-20 17:25  SHORT  LONG      95%    0.01000  |  -300s     -300s     -300s     -300s               74
+2026-09-07 19:50  LONG   SHORT     54%   -0.00003  |   300t       35c       35c       31s              331
+2026-09-08 17:09  LONG   SHORT     71%   -0.00032  |   300t      450t     -300s      220s              520
+2026-09-10 10:02  LONG   SHORT     54%   -0.00118  |   300t      450t      600t       89s              670
+2026-09-15 13:34  LONG   SHORT     44%   -0.00382  |   300t      450t      600t      256s              635
+2026-09-15 15:35  LONG   SHORT     71%   -0.00523  |   300t      450t     -300s      181s              481
+2026-09-15 18:23  LONG   SHORT     90%   -0.00872  |  -300s     -300s     -300s     -300s              283
+2026-09-15 18:54  LONG   SHORT     46%   -0.00865  |  -300s     -300s     -300s     -300s              144
+2026-09-15 20:51  LONG   SHORT     73%   -0.00877  |  -300s     -300s     -300s     -300s                0
+
+═══ GROUPS ═══
+
+── LOW-SMOKE  (<P50)  — the vacuum candidates (2 fades)
+   300/300          net      0t  W/L 1/1  (50%)  avg 0t/fade  exits: t=1 s=1 c=0
+   450/300          net    150t  W/L 1/1  (50%)  avg 75t/fade  exits: t=1 s=1 c=0
+   600/300          net    300t  W/L 1/1  (50%)  avg 150t/fade  exits: t=1 s=1 c=0
+   trail(+300,300)  net    -44t  W/L 1/1  (50%)  avg -22t/fade  exits: t=0 s=2 c=0
+
+── MID-SMOKE  (P50-P75) (9 fades)
+   300/300          net   1500t  W/L 7/2  (78%)  avg 167t/fade  exits: t=7 s=2 c=0
+   450/300          net   2135t  W/L 7/2  (78%)  avg 237t/fade  exits: t=6 s=2 c=1
+   600/300          net    335t  W/L 4/5  (44%)  avg 37t/fade  exits: t=3 s=5 c=1
+   trail(+300,300)  net   1766t  W/L 7/2  (78%)  avg 196t/fade  exits: t=0 s=9 c=0
+
+── HIGH-SMOKE (>=P75) — CONTROL: fading a real burn should LOSE (21 fades)
+   300/300          net  -2700t  W/L 6/15  (29%)  avg -129t/fade  exits: t=6 s=15 c=0
+   450/300          net  -2550t  W/L 5/16  (24%)  avg -121t/fade  exits: t=5 s=16 c=0
+   600/300          net  -1800t  W/L 5/16  (24%)  avg -86t/fade  exits: t=5 s=16 c=0
+   trail(+300,300)  net  -2878t  W/L 6/15  (29%)  avg -137t/fade  exits: t=0 s=21 c=0
+
+── ALL fades (32 fades)
+   300/300          net  -1200t  W/L 14/18  (44%)  avg -38t/fade  exits: t=14 s=18 c=0
+   450/300          net   -265t  W/L 13/19  (41%)  avg -8t/fade  exits: t=12 s=19 c=1
+   600/300          net  -1165t  W/L 10/22  (31%)  avg -36t/fade  exits: t=9 s=22 c=1
+   trail(+300,300)  net  -1156t  W/L 14/18  (44%)  avg -36t/fade  exits: t=0 s=32 c=0

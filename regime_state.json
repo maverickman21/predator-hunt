@@ -1,25 +1,25 @@
 {
-  "timestamp": "2026-08-23T19:12:42.928Z",
+  "timestamp": "2026-09-18T04:26:32.238Z",
   "regime": "LONG",
   "regime_since": "2026-06-25T04:45:22.645Z",
   "pair1": {
-    "h1_current": -0.07,
-    "h1_consecutive": -3,
-    "h1_direction": "deteriorating",
-    "h4_current": -0.26,
-    "h4_gate": "open_short",
-    "h4_consecutive": -8,
+    "h1_current": 0.94,
+    "h1_consecutive": 3,
+    "h1_direction": "improving",
+    "h4_current": 2.72,
+    "h4_gate": "open_long",
+    "h4_consecutive": -4,
     "h4_direction": "deteriorating",
     "ready": true,
     "go": true
   },
   "pair2": {
-    "liq_pct": 7.93275979882411,
+    "liq_pct": 3.7288859961223637,
     "liq_extreme": true,
     "liq_extreme_side": "short_exhausted",
-    "liq_vol": 0.23741637712,
-    "liq_vol_magnitude": 0.02009454255000001,
-    "liq_pct_magnitude": 4.678310810509486,
+    "liq_vol": 0.69727233541164,
+    "liq_vol_magnitude": 0.030014897469999968,
+    "liq_pct_magnitude": 3.959133108579772,
     "ready": true,
     "go": false
   },
@@ -31,35 +31,35 @@
   },
   "conditions": {
     "long": {
-      "pair1_ready": false,
-      "pair1_go": false,
-      "pair2_ready": false,
-      "pair2_go": false,
-      "corr_ok": false,
-      "macro_allowed": false
-    },
-    "short": {
       "pair1_ready": true,
       "pair1_go": true,
-      "pair2_ready": true,
+      "pair2_ready": false,
       "pair2_go": false,
       "corr_ok": false,
       "macro_allowed": true
     },
+    "short": {
+      "pair1_ready": true,
+      "pair1_go": false,
+      "pair2_ready": true,
+      "pair2_go": false,
+      "corr_ok": false,
+      "macro_allowed": false
+    },
     "mode": "holding"
   },
   "macro": {
-    "bias": "SHORT",
-    "reason": "The macro permission stack remains SHORT-leaning: funding has been exchange-cap-pinned for 38+ consecutive prints, marking the crowd maximally long, while CPI (3.4% YoY) and flat PPI are soft enough not to threaten rate-hike kill switches. The chronic Hormuz fog and 30Y yield at 5.28% — near its 19-year high — continue to suppress the clean, announcement-grade episode required to arm the gate and trigger a harvest, sustaining the contraction/desert regime that has dominated August.",
+    "bias": "SIDELINES",
+    "reason": "The macro picture is hawkish-and-stalemated: the Fed delivered its first hike since 2023 with a unanimous vote and signalled more to come, lifting the 10y back to 5% and holding the 30y at ~5.34% — deep in the empirical desert band (>5.2%) that has correlated with every barren stretch since July. M2 is expanding at a record nominal level but the rate of expansion is sub-trend, and the chronic Hormuz/energy disruption keeps inflation structurally elevated, making a mean-reverting LONG regime unlikely until yields compress or the energy supply shock resolves.",
     "confidence": "MEDIUM"
   },
   "prices": {
-    "eth": 2441.51444,
+    "eth": 2469.53101,
     "nq": 0
   },
   "context": {
-    "funding": 0.01,
-    "ls_long": 47.6,
+    "funding": 0.008879,
+    "ls_long": 50.51,
     "yellows": 2
   },
   "base_scanner": {

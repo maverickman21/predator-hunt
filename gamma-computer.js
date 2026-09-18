@@ -82,9 +82,9 @@ function computeSnapshot(tsIso, rows) {
 
     // zero-gamma: scan +-20% in 0.25% steps for sign flip nearest spot
     let zero = '';
-    let prevS = spot * 0.80, prevG = netGexAt(prevS, live, tsMs);
+    let prevS = spot * 0.50, prevG = netGexAt(prevS, live, tsMs);
     let bestDist = Infinity;
-    for (let f = 0.8025; f <= 1.2001; f += 0.0025) {
+    for (let f = 0.5025; f <= 1.5001; f += 0.0025) {
         const s = spot * f, g = netGexAt(s, live, tsMs);
         if ((prevG < 0 && g >= 0) || (prevG > 0 && g <= 0)) {
             const cross = prevS + (s - prevS) * (Math.abs(prevG) / (Math.abs(prevG) + Math.abs(g) || 1));
@@ -111,21 +111,41 @@ function computeSnapshot(tsIso, rows) {
     return { spot, netGex, zero, callWall, putWall, n: live.length };
 }
 
-function loadChainGrouped() {
-    const dir = __dirname;
-    const files = fs.readdirSync(dir).filter(f => /^eth_chain_v1_\d{4}-\d{2}\.csv$/.test(f)).sort();
-    const groups = new Map();   // tsIso -> rows
+// STREAMING loader (rewritten 2026-08-29): the previous version read EVERY chain
+// file into memory and built a Map of every snapshot's every strike row - ~3M objects,
+// rebuilt from scratch every 15 minutes. That was both the boot failure and the leak.
+// This version streams line-by-line, flushes each completed snapshot immediately,
+// and holds only one snapshot (~600 rows) at a time. Constant memory, any archive size.
+const readline = require('readline');
+
+function chainFiles() {
+    return fs.readdirSync(__dirname)
+        .filter(f => /^eth_chain_v1_\d{4}-\d{2}\.csv$/.test(f)).sort();
+}
+
+async function streamSnapshots(onSnapshot, onlyRecent) {
+    let files = chainFiles();
+    // steady-state: only the current + previous month can hold unprocessed rows
+    if (onlyRecent && files.length > 2) files = files.slice(-2);
+    let banked = 0;
     for (const f of files) {
-        const lines = fs.readFileSync(path.join(dir, f), 'utf8').split('\n');
-        for (let i = 1; i < lines.length; i++) {
-            const line = lines[i].trim();
+        const rl = readline.createInterface({
+            input: fs.createReadStream(path.join(__dirname, f)),
+            crlfDelay: Infinity
+        });
+        let curTs = null, rows = [];
+        let first = true;
+        for await (const line of rl) {
+            if (first) { first = false; continue; }           // header
             if (!line) continue;
             const p = line.split(',');
             if (p.length < 9) continue;
             const ts = p[1];
-            let g = groups.get(ts);
-            if (!g) { g = []; groups.set(ts, g); }
-            g.push({
+            if (ts !== curTs) {
+                if (curTs && rows.length) { banked++; await onSnapshot(curTs, rows); }
+                curTs = ts; rows = [];
+            }
+            rows.push({
                 underlying: parseFloat(p[2]) || 0,
                 expMs: expiryMs(p[3]),
                 strike: parseFloat(p[4]) || 0,
@@ -134,8 +154,10 @@ function loadChainGrouped() {
                 iv: (parseFloat(p[7]) || 0) / 100,
             });
         }
+        if (curTs && rows.length) { banked++; await onSnapshot(curTs, rows); }
+        rows = null;
     }
-    return groups;
+    return banked;
 }
 
 function outFileFor(tsMs) {
@@ -158,24 +180,28 @@ function doneTimestamps() {
     return done;
 }
 
-function run() {
-    const groups = loadChainGrouped();
+async function run() {
     const done = doneTimestamps();
-    const todo = [...groups.keys()].filter(ts => !done.has(ts)).sort();
     let wrote = 0;
-    for (const ts of todo) {
-        const res = computeSnapshot(ts, groups.get(ts));
-        if (!res) continue;
+    const banked = await streamSnapshots(async (ts, rows) => {
+        if (done.has(ts)) return;
+        const res = computeSnapshot(ts, rows);
+        if (!res) return;
         const tsMs = Date.parse(ts);
         const file = outFileFor(tsMs);
         if (!fs.existsSync(file)) fs.writeFileSync(file, HEADER);
         fs.appendFileSync(file, qldStr(tsMs) + ',' + ts + ',' + res.spot.toFixed(2) + ','
             + Math.round(res.netGex) + ',' + res.zero + ',' + res.callWall + ',' + res.putWall + ',' + res.n + '\n');
+        done.add(ts);
         wrote++;
-    }
-    console.log('[GAMMA] ' + qldStr(Date.now()) + ' processed ' + wrote + ' new snapshot(s) (' + groups.size + ' banked)');
+    }, !BACKFILL);
+    console.log('[GAMMA] ' + qldStr(Date.now()) + ' processed ' + wrote + ' new snapshot(s) (' + banked + ' scanned)');
 }
 
-run();
-if (!BACKFILL) setInterval(run, INTERVAL_MS);
-else console.log('[GAMMA] backfill complete.');
+(async () => {
+    await run();
+    if (!BACKFILL) {
+        const tick = async () => { try { await run(); } catch (e) { console.error('[GAMMA] cycle error: ' + e.message); } setTimeout(tick, INTERVAL_MS); };
+        setTimeout(tick, INTERVAL_MS);
+    } else console.log('[GAMMA] backfill complete.');
+})().catch(e => { console.error('[GAMMA] fatal: ' + e.message); process.exit(1); });

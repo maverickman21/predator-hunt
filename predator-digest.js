@@ -30,6 +30,7 @@ const GATE_PCT = 0.95, GATE_LOOKBACK_D = 14;
 const LATCH_MEM = 0.92, LATCH_NQ_HOURS = 24, SMOKE_PCT = 0.80;
 const EP_MIN = 15, THUMB_PCT = 0.90, THUMB_WIN_MIN = 90;
 const FLOOR_PCT = 0.60, FLOOR_NQ_HOURS = 24;
+const VOTE_SMOKE_PCT = 0.75;   // board #2: crowd-side episode liq must rank >= P75 of prior-7d 15-min windows
 const BELL_BAR_PCT = 0.95, BELL_GAP_PCT = 0.90, BELL_VICTIM_PCT = 0.80;
 const BLACKOUT_QLD = [5, 8];           // no entries 05:00-08:00 Qld
 const SAT_LEVEL = 0.0099;              // funding cap neighbourhood => saturated
@@ -295,9 +296,16 @@ function triggerAt(t, armed) {
   const e = epSums(t);
   const blackout = qldHour(t) >= BLACKOUT_QLD[0] && qldHour(t) < BLACKOUT_QLD[1];
   const weekend = isWeekend(t);
+  // BOARD #2 (2026-09-18): the liquidation witness must be able to TESTIFY.
+  // Crowd-side liq in the episode is ranked against every 15-min window of the prior
+  // 7 days; below VOTE_SMOKE_PCT the witness is silent and the vote fails. Closes the
+  // "nothing beats nothing" hole ($0.1M vs $0.0M passed on 15 Sep). Provisional; board #3 grades it.
+  const crowdMap = armed === 'SHORT' ? liqLong : armed === 'LONG' ? liqShort : null;
+  const smokeEp = crowdMap ? pctRankOfSum(crowdMap, t, EP_MIN, 15, 7) : { rank: 0, value: 0 };
+  const smokeOK = smokeEp.rank >= VOTE_SMOKE_PCT;
   let vote = false;
-  if (armed === 'SHORT') vote = e.dOIc < 0 && e.delta < 0 && e.ll > e.sl;
-  else if (armed === 'LONG') vote = e.dOIc > 0 && e.delta > 0 && e.sl > e.ll;
+  if (armed === 'SHORT') vote = e.dOIc < 0 && e.delta < 0 && e.ll > e.sl && smokeOK;
+  else if (armed === 'LONG') vote = e.dOIc > 0 && e.delta > 0 && e.sl > e.ll && smokeOK;
   const thumb = magRankNQ(t, THUMB_WIN_MIN);
   const floor = magRankNQ(t, FLOOR_NQ_HOURS * 60);
   const sized = thumb >= THUMB_PCT && floor >= FLOOR_PCT;
@@ -305,6 +313,7 @@ function triggerAt(t, armed) {
   return {
     episode: { dOIc: Math.round(e.dOIc), dOIu_M: +(e.dOIu / 1e6).toFixed(2), delta_M: +(e.delta / 1e6).toFixed(2), liqL_M: +(e.ll / 1e6).toFixed(2), liqS_M: +(e.sl / 1e6).toFixed(2) },
     vote, thumbRank: +thumb.toFixed(3), floorRank: +floor.toFixed(3), sized,
+    smokePct: +smokeEp.rank.toFixed(3), smokeOK,
     blackout, weekend,
     fire: !!armed && armed !== 'NONE' && vote && sized && !blackout && !weekend,
     stamps: { authored: +authored.toFixed(2), full_house: vote && ((armed === 'SHORT' && e.dOIu < 0) || (armed === 'LONG' && e.dOIu > 0)) }
@@ -401,9 +410,11 @@ function start() {
         const t = current.trigger.episode;
         const line = current.ts + ',' + current.qld + ',' + current.gate.armed + ',' +
           (current.gate.via || 'live') + ',' + t.dOIc + ',' + t.delta_M + ',' +
-          current.trigger.thumbRank + ',' + current.trigger.floorRank + '\n';
+          current.trigger.thumbRank + ',' + current.trigger.floorRank + ',' +
+          t.liqL_M + ',' + t.liqS_M + ',' + current.trigger.smokePct + ',' +
+          current.gate.rank + ',' + current.gate.level + '\n';
         if (!fs.existsSync(f))
-          fs.writeFileSync(f, 'ts_utc,qld,side,via,dOIc,delta_M,thumbRank,floorRank\n');
+          fs.writeFileSync(f, 'ts_utc,qld,side,via,dOIc,delta_M,thumbRank,floorRank,liqL_M,liqS_M,smokePct,rank,level\n');
         fs.appendFileSync(f, line);
         console.log('[digest] LIVE FIRE appended: ' + current.qld + ' ' + current.gate.armed);
       }
@@ -429,9 +440,13 @@ if (require.main === module && process.argv[2] === '--replay') {
   console.log('[replay] scanning ' + process.argv[3] + ' -> ' + process.argv[4]);
   const outIdx = process.argv.indexOf('--out');
   const outFile = outIdx > 0 ? process.argv[outIdx + 1] : null;
-  const fireRows = ['ts_utc,qld,side,via,dOIc,delta_M,thumbRank,floorRank'];
+  // --step N : replay grid in minutes. Default 5 (fast, used by the morning bot's 24h review).
+  // Use --step 1 for acceptance runs so replay fires match the live 60-second engine.
+  const stepIdx = process.argv.indexOf('--step');
+  const STEP_MS = (stepIdx > 0 ? Math.max(1, parseInt(process.argv[stepIdx + 1], 10) || 5) : 5) * 60000;
+  const fireRows = ['ts_utc,qld,side,via,dOIc,delta_M,thumbRank,floorRank,liqL_M,liqS_M,smokePct,rank,level'];
   let lastFire = 0;
-  for (let m = from; m <= to; m += 5 * 60000) {
+  for (let m = from; m <= to; m += STEP_MS) {
     appendGridRank(m);
     const gate = gateAt(m);
     if (gate.armed === 'NONE') continue;
@@ -440,7 +455,8 @@ if (require.main === module && process.argv[2] === '--replay') {
       console.log(qld(m) + '  ' + gate.armed + ' (' + gate.via + ')  dOIc:' + trig.episode.dOIc +
         ' delta:' + trig.episode.delta_M + 'M  thumb:' + trig.thumbRank + ' floor:' + trig.floorRank);
       fireRows.push(new Date(m).toISOString() + ',' + qld(m) + ',' + gate.armed + ',' + gate.via + ',' +
-        trig.episode.dOIc + ',' + trig.episode.delta_M + ',' + trig.thumbRank + ',' + trig.floorRank);
+        trig.episode.dOIc + ',' + trig.episode.delta_M + ',' + trig.thumbRank + ',' + trig.floorRank + ',' +
+        trig.episode.liqL_M + ',' + trig.episode.liqS_M + ',' + trig.smokePct + ',' + gate.rank + ',' + gate.level);
       lastFire = m;
     }
   }
